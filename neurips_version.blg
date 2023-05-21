@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2022)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: neurips_version.aux
+The style file: plainnat.bst
+Database file #1: thesis.bib
+Warning--I didn't find a database entry for "]"
+You've used 66 entries,
+            2773 wiz_defined-function locations,
+            1093 strings with 30242 characters,
+and the built_in function-call counts, 54772 in all, are:
+= -- 4470
+> -- 5551
+< -- 31
++ -- 1848
+- -- 1776
+* -- 5317
+:= -- 8867
+add.period$ -- 310
+call.type$ -- 66
+change.case$ -- 770
+chr.to.int$ -- 60
+cite$ -- 132
+duplicate$ -- 1661
+empty$ -- 2774
+format.name$ -- 1848
+if$ -- 11106
+int.to.chr$ -- 7
+int.to.str$ -- 1
+missing$ -- 65
+newline$ -- 424
+num.names$ -- 294
+pop$ -- 1457
+preamble$ -- 1
+purify$ -- 704
+quote$ -- 0
+skip$ -- 1663
+stack$ -- 0
+substring$ -- 1135
+swap$ -- 333
+text.length$ -- 26
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 726
+warning$ -- 0
+while$ -- 289
+width$ -- 0
+write$ -- 1060
+(There was 1 warning)

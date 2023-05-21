@@ -1,6 +1,94 @@
-\chapter{Literature Review}
-\input{chapters/folder_lit_review/federated_learning.tex}
+% \listoftodos[Background]
+\todo{Scalability experiments with increasing cohort sizes}
 
-\input{chapters/folder_lit_review/federated_continual_learning.tex}
+The standard FL objective can be modelled as seen in \cref{eq:flObjective}
+\begin{equation} \label{eq:flObjective}
+    \underset{\theta}{\min} F(\theta) = \sum_{c \in C} p_c F_c(\theta) \ ,
+\end{equation}
+where \(F\) is the federated objective, $C$ is the client set, $\theta$ is the model, and \(F_c\) is the loss of client \(c\) weighted by their fraction of the total number of examples $p_c$. This formulation assumes that a single global model is being trained without regard for the distribution of its performance across client datasets. Federated Averaging (FedAvg)~\citep{FedAvg} trains the global model locally on clients, for each round $t$ it sums the update \(\theta_t^c - \theta_t\) from client $c$ weighted by \(p_c\) with the previous model \(\theta_t\) using learning rate \( \eta \), as seen in \cref{eq:FedAvg}
+\begin{equation} \label{eq:FedAvg}
+    \theta_{t+1} = \theta_t + \eta \left( \sum_{c \in C} p_c \left(\theta_t^c - \theta_t \right) \ \right) \ .
+\end{equation}
 
-\input{chapters/folder_lit_review/hierarchical_federated_learning.tex}
+The inability to colocate client data and the need to construct rough mixtures of model parameters as a compromise represent the leading causes of FL-specific challenges.
+
+\subsection{Heterogeneity}\label{background:data_heterogeneity}
+
+Non-IID data has been shown to impact both practical accuracies \citep{FLwithNonIID, NonIIDQagmire} and theoretical convergence bounds \citep{OnTheConvergenceOfFedAvgOnNonIIDdata}. It is thus worth detailing some forms of heterogeneity that \citet{AdvancedAndOpenProblems} identify. The most commonly addressed form is quantity skew caused by clients having different amounts of data available. Standard FL algorithms effectively address Quantity skew via a simple reweighing (\cref{eq:FedAvg}). The other frequently-considered type of heterogeneity is label-distribution skew which is quantity skew per class. While these forms of heterogeneity have been most investigated, situations where features and labels are not related in the same manner across clients are far more pathological and may require some form of clustering or personalisation to tackle. In the worst-case scenario, each client may represent an entirely different task, as in Multi-Task Learning, with potentially no overlap in their solution space.
+
+
+\paragraph{System (hardware) heterogeneity} Devices within the federated network may differ regarding computational ability, storage, network speed, and reliability. They may also differ from themselves at a different point in time as their battery power, network connection, or operational mode vary. Importantly, variations in data-generating hardware, such as sensors, are linked to data heterogeneity. However, system heterogeneity and device unreliability harm the FL process independently of data. For example, slower hardware may result in straggling clients which elongate rounds in synchronous FL or operate on stale parameters in asynchronous FL\@. In addition, network or device unreliability creates dropout, which requires oversampling clients~\cite{ScaleSystemDesign} and harms the effectiveness of maintaining client state across rounds.
+
+\paragraph{Dataset Shift and Continual Learning}  Allowing ML models to participate in lifelong learning effectively is the goal of continual learning~\citep{ContinualLearningSurvey}; however, applying continual learning to the FL context is problematic for two primary reasons. First, the optimisation objective (\cref{eq:flObjective}) intends to find a compromise model across all clients and cannot precisely fit all their data. Consequently, if the dataset of one client shifts independently of the whole network, the federated model will find it hard to adapt. Second, continual learning techniques such as Elastic-weight Consolidation~\citep{kirkpatrick2017overcoming},  PackNet~\citep{PackNetAM}, and Learning without Forgetting~\citep{LearningWithoutForgetting} are designed for task-incremental settings where class labels are known, small amounts of previous data may still be available for specialised use cases~\citep{kirkpatrick2017overcoming}, and there may even be different output heads for each task. The privacy requirements of FL make such solutions difficult at the level of the federated network without the addition of persistent local storage.
+
+\subsection{Federated Learning Efficiency}
+It is now worth expanding on the trends that \citet{LargeCohorts} discovered. Those that limit the efficiency of FL in Non-IID settings where clients perform multiple SGD steps are of particular interest. Three significant effects can be observed. First, highly heterogeneous clients may cause sudden reductions in accuracy when their models are aggregated. Second, larger cohorts bring diminishing improvements in final accuracy and speed of convergence. Third, larger cohorts decrease data efficiency as more examples are needed for every accuracy gain.
+
+These behaviours are approximately analogous to the well-known efficiency and generalisation limitations of large-batch training in centralised ML~\citep{LargeBatchGenGapSharpMinima}. \citet{LargeCohorts} find that data efficiency issues are caused by decreasing pseudo-gradient norms with increased cohort sizes and by the near-orthogonality of client updates following multiple steps of local training. The authors also find that adaptive optimisers fare better as cohort sizes grow due to scale invariance, making them particularly attractive aggregation algorithms.
+
+\subsubsection{Adaptive Federated Optimisation}
+
+Of particular relevance to this proposal are Federated Averaging with Server Momentum (FedAvgM)~\citep{FedAvgM} and the more general Federated Adaptive Optimisation (FedOPT)~\citep{FedOPT}. They extend the concepts of momentum and adaptive optimisation~\citep{AdaGrad,Adam,SgdAlgoOverview} to Federated Learning on the \textit{server-side} by treating client updates as pseudo-gradients and maintaining information across rounds on server-side accumulators. This structure allows such strategies to minimise the impact of individual rounds by averaging their pseudo-gradients and derived quantities with those of previous rounds. Since the outcome of individual rounds is highly variable based on the combination of clients selected and the model's current state, such techniques offer a more consistent optimisation trajectory.
+
+Specifically, following the account provided by \citet{FedOPT} as shown in \cref{eq:FedOpt:all}
+\begin{subequations}
+    \begin{align}
+        \Delta_t     & = \cfrac{1}{|C|} \sum_{c \in C} \left( \theta_t^c - \theta_t \right) \label{eq:FedOpt:line-2} \\
+        m_t          & = \beta_1 m_{t-1} + (1-\beta_1) \Delta_t \label{eq:FedOpt:line-3}                             \\
+        v_t          & = \beta_2 v_t + (1-\beta_2) \Delta_t^2 \label{eq:FedOpt:line-4}                               \\
+        \theta_{t+1} & = \theta_t + \eta \cfrac{m_t}{\sqrt{v_t} + \tau} \label{eq:FedOpt:line-5}
+    \end{align}
+    \label{eq:FedOpt:all}
+\end{subequations}
+for a given round $t$ and federated model $\theta_t$  each client $c$ in the selected set $C$ trains the model locally to construct a personalised version $\theta_t^c$. The pseudo-gradient $\Delta_t$ is then computed by averaging the differences between these personalised and federated models as shown in \cref{eq:FedOpt:line-2}. All operations on tensors are element-wise including division between tensors.
+
+The first-moment accumulator $m_t$ can then be constructed as the weighted average of the previous accumulator $m_t$ and $\Delta_t$ using weight $\beta_1$ as shown in \cref{eq:FedOpt:line-3}. Thus, the pseudo-gradient of the current round is smoothed by those of the previous rounds decayed using $\beta_1$. Similarly, for the version of FedOpt based on Adam~\citep{Adam} the second-moment accumulator $v_t$  keeps track of the element-wise second power of the pseudo-gradient denoted by $\Delta_t^2$ as shown in \cref{eq:FedOpt:line-4}. These two accumulators are then used to compute the updated model for the next round $\theta_{t+1}$ using the server learning rate $\eta$ as shown in \cref{eq:FedOpt:line-5}. Notably, the term $\sqrt{v_t}$ refers to the element-wise square root; it is used to normalise model parameters and make the algorithm scale-invariant to the pseudo-gradient. Finally, $\tau$ controls the adaptivity of FedOPT\@.
+
+FedOPT presents several promising properties in the context of hierarchical FL\@. First, \citet{FedOPT} show it is highly resilient to the exact choice of hyperparameters, including learning rate, compared to standard FedAvg and FedAvgM. Second, their scale-invariance partially addresses the issues observed by \citet{LargeCohorts} regarding the near-zero pseudo-gradients caused by the near-orthogonality of client updates. Third, they provide a means of automatically differentiating the learning rates of multiple servers based on the state of their accumulators without having to carry out hyperparameter tuning.
+
+
+\subsection{Related Work}
+
+To tackle the inherent trade-off between optimising for the average global performance versus the performance on the data of a specific client which can be seen in \cref{eq:flObjective}, two overall directions emerged in the literature. The first, exemplified by Fair Federated Learning~\citep{QFedAvg}, attempts to modify the importance of a client in the federated objective function to change the final model's effectiveness for that client. The second relaxes the single global model requirement by personalising the federated model~\citep{SalvagingFL,TowardsPersonalisedFL,FLwithNonIID}, maintaining persistent fully-local models alongside it~\citep{Ditto}, clustering clients based on similarity~\citep{ThreeApproachesMansour,AnEfficientFrameworkForClusteredFL}, or building hierarchies~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular}. Since the proposed B-HFL family of algorithms falls in the second camp, this section shall detail the most closely related work and present its limitations. Finally, the desired properties of the federated system and their relation to previous work are summarised in \cref{tab:gap_analysis}.
+
+
+\subsubsection{Personalised Federated Learning}
+
+Fully personalised FL refers to creating one model per client in addition to the global one. The most common means of achieving this is by local adaptation, or fine-tuning, of the federated model after training~\citep{SalvagingFL} with the potential additions of techniques such as Knowledge Distillation~\citep{DeepMutualLearning} or Elastic-weight Consolidation~\citep{kirkpatrick2017overcoming}. However, this two-stage optimisation is challenging to implement in an FL lifecycle where the federated model may need additional training after the adaptation phase has already been carried out. Furthermore, it provides no middle ground between the global and local models, which hurts the ability of such systems to integrate new clients, which may be incapable of fine-tuning.
+
+
+A more recent approach is represented by Ditto~\citep{Ditto} for settings where clients are visited frequently and can maintain state across rounds. Ditto allows clients to maintain a persistent local model and train it alongside the federated one during FL rounds. The two models are connected by incorporating the $l_2$ distance between their weights within the loss function of the local one. However, despite its proven benefits of fairness and robustness, persistent local models still face the challenges of traditional personalised models. Finally, they do not address dataset shifts within the client, as they only operate during training rounds.
+
+
+
+\subsubsection{Hierarchical Federated Learning and Clustering}
+
+The most relevant subfield of FL to our proposal is Hierarchical Federated Learning (HFL) introduced by \citet{Client-Edge-CloudHierFL}. Their proposed HierFAVG algorithm was developed primarily to handle the communication challenges of traditional cloud-based FL\@. In order to obtain scales of millions of participating clients~\citep{GoogleKeyboard, ScaleSystemDesign}, FL systems relied on cloud infrastructure to connect devices over a wide geographic area and thus incurred additional latency. This trade-off was considered worthwhile since the larger populations were necessary for convergence, and edge servers, while capable of fast client communication, could not draw on a sufficient data pool. \citet{Client-Edge-CloudHierFL} argue that a two-level structure resolves the tensions between edge servers close to the clients and cloud servers. \citet{Hier_Het_Cellular} propose an identical algorithm for heterogeneous celluar networks where edge servers are small cell base stations, and a central macro base station replaces the cloud server. Similarly to \citet{Client-Edge-CloudHierFL}, \citet{Hier_Het_Cellular} focus on reducing communication costs and go further in this direction by utilising update sparsification techniques~\citep{DeepGradientCompressin,CommCompressionDecent}.
+
+Clustering clients is an orthogonal synergistic technique that attempts to group participants based on a similarity metric. These clusters are constructed using various approaches, from clustering the model parameters directly as done in \citet{ClusterFL} do or using the loss of clients when assigned to a specific cluster as \citet{ThreeApproachesMansour} and \citet{AnEfficientFrameworkForClusteredFL} do. Clusters may also exist naturally based on characteristics like geographic location or language.
+
+Previous works in HFL show a series of limitations. The HierFAVG algorithm directly extends FedAvg~\citep{FedAvg} by allowing the cloud server to treat edge servers as clients. However, because \citet{Client-Edge-CloudHierFL} and \citet{Hier_Het_Cellular} only consider communication efficiency, they do not allow the edge servers to maintain greater personalisation and instead replace their model entirely during cloud-aggregation. Furthermore, their system does not consider asynchronicity, proxy training, or multi-level hierarchies. Regarding clustering, the available algorithms fail to obtain the desired trade-off between generalisation and personation. Standard clustering algorithms in FL assume data-sharing between clusters is unnecessary and do not directly map onto a hierarchical communication structure. Finally, they are not meant to provide a single global model besides the cluster models for applications where it would be beneficial.
+
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+\begin{table}[h]
+    \centering
+    \caption{Gap analysis table showing proposed system's properties and overlap with closely related work.}
+    \resizebox{\columnwidth}{!}{%
+        \begin{tabular}{@{}lcccccc@{}}
+            \toprule
+            Related Work                  & Hierarchical Structure          & Personalisation                 & Allows Persistent Models        & General Group Models            & Meaningful Group Models         & Asynchronous Work               \\ \midrule
+            Local Adaptation              &                                 & {\color{ForestGreen}\checkmark} &                                 &                                 &                                 &                                 \\
+            Ditto                         &                                 & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} &                                 &                                 &                                 \\
+            Clustering                    &                                 &                                 &                                 &                                 &                                 &                                 \\
+            HieFAVG                       & {\color{ForestGreen}\checkmark} &                                 &                                 & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} &                                 \\
+            Asynchronous FL               &                                 &                                 &                                 &                                 &                                 & {\color{ForestGreen}\checkmark} \\
+            Bidirectional Hierarchical FL & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} & {\color{ForestGreen}\checkmark} \\ \bottomrule
+        \end{tabular}%
+    }\label{tab:gap_analysis}
+\end{table}
