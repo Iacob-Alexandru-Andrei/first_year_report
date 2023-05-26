@@ -1,0 +1,1 @@
+{"rule":"CACOFONIE__CA","sentence":"^\\QO lucrare științifică care este menită publicării la conferința \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q sau \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}

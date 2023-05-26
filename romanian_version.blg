@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: romanian_version.aux
 The style file: plainnat.bst
 Database file #1: thesis.bib
-You've used 58 entries,
+You've used 43 entries,
             2773 wiz_defined-function locations,
-            1040 strings with 26755 characters,
-and the built_in function-call counts, 47015 in all, are:
-= -- 3890
-> -- 4607
-< -- 30
-+ -- 1533
-- -- 1470
-* -- 4514
-:= -- 7560
-add.period$ -- 272
-call.type$ -- 58
-change.case$ -- 648
-chr.to.int$ -- 53
-cite$ -- 116
-duplicate$ -- 1481
-empty$ -- 2461
-format.name$ -- 1534
-if$ -- 9586
-int.to.chr$ -- 6
+            933 strings with 20694 characters,
+and the built_in function-call counts, 32277 in all, are:
+= -- 2736
+> -- 2926
+< -- 20
++ -- 971
+- -- 924
+* -- 3023
+:= -- 5125
+add.period$ -- 208
+call.type$ -- 43
+change.case$ -- 424
+chr.to.int$ -- 39
+cite$ -- 86
+duplicate$ -- 1124
+empty$ -- 1861
+format.name$ -- 969
+if$ -- 6677
+int.to.chr$ -- 5
 int.to.str$ -- 1
-missing$ -- 58
-newline$ -- 374
-num.names$ -- 260
-pop$ -- 1215
+missing$ -- 43
+newline$ -- 281
+num.names$ -- 198
+pop$ -- 805
 preamble$ -- 1
-purify$ -- 590
+purify$ -- 381
 quote$ -- 0
-skip$ -- 1464
+skip$ -- 1032
 stack$ -- 0
-substring$ -- 1064
-swap$ -- 311
-text.length$ -- 25
+substring$ -- 746
+swap$ -- 241
+text.length$ -- 19
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 638
+type$ -- 473
 warning$ -- 0
-while$ -- 259
+while$ -- 194
 width$ -- 0
-write$ -- 936
+write$ -- 701

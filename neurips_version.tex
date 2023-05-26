@@ -31,7 +31,14 @@ urlcolor=ACMDarkBlue,
 filecolor=ACMDarkBlue}
 \bibliographystyle{plainnat}
 \usepackage[numbers]{natbib}
+\usepackage{setspace}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 
+\algrenewcommand\algorithmicindent{2em}
+
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 
 
 
@@ -72,10 +79,7 @@ filecolor=ACMDarkBlue}
 % \AND instead of \And before the third author name.
 
 \author{
-  Alexandru-Andrei Iacob \\
-  \small Laboratorul de Informatică\\
-  \small Universitatea din Cambridge\\
-  \small Supervizat de Dr.\ Nicholas Lane\\
+  Alex Iacob \\
   \texttt\small{aai30@cam.ac.uk} \\
   % examples of more authors
   % \And
@@ -103,6 +107,7 @@ filecolor=ACMDarkBlue}
 \begin{document}
 
 \maketitle
+\vspace{-0.5cm}
 % \begin{abstract}
 % \input{Files/Abstract}
 % \end{abstract}

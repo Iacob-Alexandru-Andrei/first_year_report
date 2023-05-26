@@ -1,3 +1,53 @@
+\begin{algorithm}[H]
+    \caption[Bidirectional Hierarchical FL]{Recursive algorithm for a generic version of B-HFL. Each node $q \in Q$ has an associated persistent model $W_q$, number of executing rounds $T_q$, children nodes $C_q$, leaf-to-root learning rate $\eta^\uparrow$, root-to-leaf learning rate $\eta^\downarrow$. ``Residual'' edges are kept between nodes and their ancestors/descendants in $AncRes/DescRes$
+        with the models being accumulated in the lists of lists $R^\uparrow$ and $R^\downarrow$. }\label{alg:B-HFL}
+    \begin{onehalfspace}
+
+        \begin{algorithmic}[1]
+            \Require \(Q, W, T, C, \eta^\uparrow, \eta^\downarrow, \eta^l,D,E\)
+            \Comment{lists indexed over all the nodes in Q}
+            \Require $R^{\uparrow},R^{\downarrow}$ \Comment{list of lists of models that a node $q$ receives from children/ancestors}
+            \Require $DescRes,AncRes $ \Comment{list of ``residual'' connections to descendants/ancestors}
+            \Require \( \textsc{Init}, \textsc{NodeOpt}, \textsc{SelectResiduals}  \)
+
+            \Procedure{ExecuteNode}{$\phi, q$}
+            \If{$q = \emptyset$}
+            \textbf{return} $\emptyset$ \Comment{error checking}
+            \EndIf
+            \State $\theta_0 \gets W_q$  \Comment{handle root}
+            \If{$\phi \neq \emptyset$}
+            \State $\theta_0 \gets \Call{NodeOpt}{W_0,[\phi], R^\downarrow_q, q, \eta^\downarrow_q} $ \Comment{aggregate parent $[\phi]$ and ``residuals'' from ancestors}
+            \EndIf
+
+            % \State $\Delta_0 \gets W_q - \phi$
+
+
+            \ForEach{ round $t \gets 1, \ldots, T_q$}
+            \State $\theta_t = \Call{Train}{\theta_{t},D_q,  E_q, \eta^l_q}$ \Comment{train (sync or async) parameters on node data}
+            \ForEach{ node $d \in DescRes_q$}
+            \State $ R^\downarrow_d \gets [\theta_t]$
+            \EndFor
+            \State $S \gets $Sample a subset from $q$'s set of children $C_q$
+            \ForEach{ node $c \in S$}
+            \State $\theta_t^c \gets \Call{ExecuteNode}{\theta_t, c} $ \Comment{non-blocking, returns a future}
+            % \State $\Delta_t^c \gets \theta_t^c - \theta_t$
+            \EndFor
+            \ForEach{ node $a \in AncRes_q$}
+            \State $ R^\uparrow_a \gets \Call{SelectResiduals}{[\theta^c_t \,\, \forall c \in S]}$
+            \EndFor
+            % \State $\Delta_t \gets \frac{1}{|C_q|} \sum_{c \in C_q} \Delta_t^c$
+            \State $\theta_{t+1} \gets \Call{NodeOpt}{\theta_t, [\theta^c_t \,\, \forall c \in S], R^\uparrow_q, \eta^{\uparrow}_q}  $ \Comment{aggregate children and downstream residuals}
+            \EndFor
+            \State $W_q \gets \theta_{T_q}$ \Comment{update persistent node model}
+            \State \textbf{return} $\theta_{T_q}$
+            \EndProcedure
+
+            \State $\Call{ExecuteNode}{\emptyset, root}$
+        \end{algorithmic}
+    \end{onehalfspace}
+\end{algorithm}
+
+
 
 Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimises data and communication efficiency. This is achieved by using the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
 
@@ -13,6 +63,8 @@ Given the shortcomings of traditional hierarchical FL systems, this work propose
     \item All nodes may be allowed to operate synchronously or asynchronously concerning other nodes on the same level if necessary during leaf-to-root aggregation. For leaves (clients) under the control of an edge-server, this is equivalent to traditional asynchronous FL~\citep{AsynchronousFLonHetDevicesSurvey}. For an internal node, the same federated asynchronous strategies~\citep{FedBuff,PAPAYA} can be applied when receiving models from the child nodes, with client execution being replaced by the execution of the entire subtree.
 \end{enumerate}
 
+
+\cref{alg:B-HFL}
 
 
 Expressly, parameters aggregated from the leaf nodes (clients) up through the tree are fine-tuned to relevant local data. In contrast, parameters transmitted from parents to children are averaged over more numerous populations. When servers cover meaningfully clustered clients, these populations may be less related (e.g., covering multiple languages). Furthermore, if internal nodes are allowed to train on proxy datasets, they inject additional training into the federated models and provide regularisation for the entire tree. In traditional FL approaches, training on the server directly controlling the clients can impose overly strong regularisation; however, in B-HFL, higher nodes in the tree already represent a global picture and have limited impact at the leaves as their influence gets diluted through multiple intermediary nodes. Finally, allowing each client to maintain a persistent model across rounds and aggregate with their parents rather than entirely replacing their model makes them identical to any other node except for not having children.

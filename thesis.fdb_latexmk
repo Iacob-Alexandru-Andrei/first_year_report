@@ -2,7 +2,7 @@
 ["bibtex thesis"] 0 "thesis.aux" "thesis.bbl" "thesis" 0
   "/usr/local/texlive/2022/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
   "thesis.aux" 0 -1 0 "pdflatex"
-  "thesis.bib" 1684571067 91473 241ac95633dae803b83cbe8829f3868a ""
+  "thesis.bib" 1684743053 93728 7d7b8481cdcf96a50c936649513559ca ""
   (generated)
   "thesis.bbl"
   "thesis.blg"
@@ -11,7 +11,7 @@
   (generated)
   "thesis.ilg"
   "thesis.ind"
-["pdflatex"] 1684571079 "/Users/iacobalexandru/projects/first_year_report/thesis.tex" "thesis.pdf" "thesis" 1684571079
+["pdflatex"] 1685029797 "/Users/iacobalexandru/projects/first_year_report/thesis.tex" "thesis.pdf" "thesis" 1685029797
   "/Users/iacobalexandru/projects/first_year_report/thesis.tex" 1684571077 4616 2e99f68c741d6e57974a1c536b5757c5 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -37,6 +37,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb" 1248133631 37166 8ab3487cbe3ab49ebce74c29ea2418db ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
@@ -218,15 +219,15 @@
   "CollegeShields/CUni.pdf" 1679413458 71776 e4dfefa7564ecf4eab7ab56e6dd0bb16 ""
   "CollegeShields/Homerton.pdf" 1679413458 157496 dad18ad35006f702259f3edb9c7558dd ""
   "cam-thesis.cls" 1679413458 17758 ee7a55f573ebff5de90e08be767b8eba ""
-  "chapters/introduction.tex" 1684565076 10918 667805501bff7762a6e637f436da494d ""
-  "chapters/literature_review.tex" 1684565113 19042 8b81c4b3bf4bde4bc1c7d96befc81510 ""
-  "chapters/progress_report.tex" 1684571000 51 544ecab9825847e6ae831386c03bb560 ""
-  "chapters/proposal.tex" 1684564974 9973 190ffe716df7b20ee732465ac0f7b4ce ""
-  "chapters/timeplan.tex" 0 -1 0 ""
+  "chapters/introduction.tex" 1685023633 10041 a39e066190b326bfebe75d5bbfac7f2a ""
+  "chapters/literature_review.tex" 1684675449 16758 43912eee2516b6a609a80d2a9c91d23e ""
+  "chapters/progress_report.tex" 1685023578 3029 9bf0e29656960e9b4b6ac2341da8331f ""
+  "chapters/proposal.tex" 1685029795 11277 d5dd779acb5fbdf0f11ca427ffac257f ""
+  "chapters/timeplan.tex" 1685019570 4455 13fd36fb7df7e204faff02420356d0d7 ""
   "glossary.tex" 1679414066 88 b5c268220640008face6d6a6572bbb62 ""
   "plots/Tree_Structure.drawio.pdf" 1684336350 52245 b87fe0c8abcb395014c86752f5907644 ""
-  "thesis.aux" 1684571079 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "thesis.bbl" 1684571077 39380 65dd57cff35c6db0571d43598c33af62 "bibtex thesis"
+  "thesis.aux" 1685029797 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "thesis.bbl" 1685029796 36131 8efafe15eb508050fb1381efe230a6f7 "bibtex thesis"
   "thesis.brf" 0 -1 0 "pdflatex"
   "thesis.gls" 0 -1 0 ""
   "thesis.ind" 0 -1 0 "makeindex thesis.idx"
