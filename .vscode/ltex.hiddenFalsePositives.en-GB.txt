@@ -7,3 +7,7 @@
 {"rule":"TOO_LONG_SENTENCE","sentence":"^\\QThis work proposes addressing the challenges above by constructing hierarchical tree-like federated network structures that allow bidirectional and potentially cyclical dataflow where each leaf is a client, and each internal node is a server capable of training on proxy public data.\\E$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\Q“Residual” connections are not shown as they are not standard within t\\E$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\Q“Residual” connections are not shown since they are constructed on an ad-hoc basis.\\E$"}
+{"rule":"PASSIVE_VOICE","sentence":"^\\QIt assumes that the model initialization \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, training \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, and node aggregation \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q procedures are provided.\\E$"}
+{"rule":"PASSIVE_VOICE","sentence":"^\\QAll variables are indexed on a per-node basis and assumed to be provided by the implementation.\\E$"}
+{"rule":"PASSIVE_VOICE","sentence":"^\\QThe “residual” connections are defined as adjacency lists between nodes and their ancestors/descendents in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q,\\E$"}
+{"rule":"PASSIVE_VOICE","sentence":"^\\QAll variables are indexed per-node and assumed to be provided by the implementation.\\E$"}

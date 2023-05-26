@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex neurips_version"] 1685097799 "neurips_version.aux" "neurips_version.bbl" "neurips_version" 1685097800
+["bibtex neurips_version"] 1685110074 "neurips_version.aux" "neurips_version.bbl" "neurips_version" 1685110362
   "/usr/local/texlive/2022/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "neurips_version.aux" 1685097800 26217 98802676c5261b8839fedaac472901c9 "pdflatex"
+  "neurips_version.aux" 1685110361 29248 e26779d28561b0375f4fb101c5d4c0a0 "pdflatex"
   "thesis.bib" 1684743053 93728 7d7b8481cdcf96a50c936649513559ca ""
   (generated)
   "neurips_version.bbl"
   "neurips_version.blg"
-["pdflatex"] 1685097799 "/Users/iacobalexandru/projects/first_year_report/neurips_version.tex" "neurips_version.pdf" "neurips_version" 1685097800
-  "/Users/iacobalexandru/projects/first_year_report/neurips_version.tex" 1685029831 3706 44dac7f914663b0830b307bb4cd8b9ee ""
+["pdflatex"] 1685110360 "/Users/iacobalexandru/projects/first_year_report/neurips_version.tex" "neurips_version.pdf" "neurips_version" 1685110362
+  "/Users/iacobalexandru/projects/first_year_report/neurips_version.tex" 1685110360 3707 83a5e3423748a87b3597d71469fcf110 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -204,14 +204,14 @@
   "chapters/introduction.tex" 1685023633 10041 a39e066190b326bfebe75d5bbfac7f2a ""
   "chapters/literature_review.tex" 1684675449 16758 43912eee2516b6a609a80d2a9c91d23e ""
   "chapters/progress_report.tex" 1685023578 3029 9bf0e29656960e9b4b6ac2341da8331f ""
-  "chapters/proposal.tex" 1685097797 12232 f55af7d2ae0cfb04f1688116c7e1f6c3 ""
-  "chapters/timeplan.tex" 1685019570 4455 13fd36fb7df7e204faff02420356d0d7 ""
+  "chapters/proposal.tex" 1685110048 16384 a12d4ccb3a2e01dcd70bc17d5dc5bc0e ""
+  "chapters/timeplan.tex" 1685110073 3841 c7e50cb712971838c03131ee66cb3197 ""
   "neurips_2021.sty" 1684576151 11547 a7446bc033c0f75c6102f07a536cdd22 ""
-  "neurips_version.aux" 1685097800 26217 98802676c5261b8839fedaac472901c9 "pdflatex"
-  "neurips_version.bbl" 1685097799 36131 8efafe15eb508050fb1381efe230a6f7 "bibtex neurips_version"
-  "neurips_version.brf" 1685097800 7290 dafc029d4f4d216ccb81213b7348037e "pdflatex"
-  "neurips_version.out" 1685097800 2426 0e0f3d97b58fbfd318a17b203b984b16 "pdflatex"
-  "neurips_version.tex" 1685029831 3706 44dac7f914663b0830b307bb4cd8b9ee ""
+  "neurips_version.aux" 1685110361 29248 e26779d28561b0375f4fb101c5d4c0a0 "pdflatex"
+  "neurips_version.bbl" 1685110074 36131 8efafe15eb508050fb1381efe230a6f7 "bibtex neurips_version"
+  "neurips_version.brf" 1685110361 7288 90ef5fc383758f5e3eeeee700d1bc22a "pdflatex"
+  "neurips_version.out" 1685110361 2426 0e0f3d97b58fbfd318a17b203b984b16 "pdflatex"
+  "neurips_version.tex" 1685110360 3707 83a5e3423748a87b3597d71469fcf110 ""
   "plots/Tree_Structure.drawio.pdf" 1684336350 52245 b87fe0c8abcb395014c86752f5907644 ""
   (generated)
   "neurips_version.aux"
