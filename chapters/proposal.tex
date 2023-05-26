@@ -8,7 +8,7 @@ Given the shortcomings of traditional hierarchical FL systems, this work propose
     \item While previous methods such as HierFAVG~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular} entirely replace the edge-server and client models after global aggregation takes place, B-HFL performs partial aggregation between a children node and their parent, which allows children to maintain their local weights while incorporating global information. We propose modeling this in two phases:
 
           \begin{enumerate}
-              \item \textbf{Leaf-to-root aggregation:}:clients finish training, and their information is propagated up the tree. Each internal node has an internal parameter $T_n$, which determines after how many rounds it sends its updates to the parent. This value is equivalent to local client epochs and may be the same for all nodes at a given tree level or independently set per node.
+              \item \textbf{Leaf-to-root aggregation:} clients finish training, and their information is propagated up the tree. Each internal node has an internal parameter $T_n$, which determines after how many rounds it sends its updates to the parent. This value is equivalent to local client epochs during SGD and may be the same for all nodes at a given tree level or independently set per node.
               \item \textbf{Root-to-leaf aggregation:} After a node has received and aggregated the training result from some or all of its children, it propagates its parameters down their subtree. The cost of this propagation is proportional to the depth of the subtree; however, the connection speed between internal nodes can be assumed to be higher than that of the clients to edge servers.
           \end{enumerate}
 
@@ -46,20 +46,24 @@ Since not all nodes in the tree are required to be capable of training, it is wo
 
 
             \ForEach{ round $t \gets 1, \ldots, T_q$} \label{alg:B-HFL:line:6}
-            \State $\theta_t = \Call{Train}{\theta_{t},D_q,  E_q, \eta^l_q}$ \Comment{train (sync or async) parameters on node data} \label{alg:B-HFL:line:7}
             \ForEach{ node $d \in DescRes_q$}  \label{alg:B-HFL:line:8}
             \State $ R^\downarrow_d \gets [\theta_t]$ \label{alg:B-HFL:line:9}
             \EndFor
             \State $S \gets $Sample a subset from $q$'s set of children $C_q$ \label{alg:B-HFL:line:10}
+
+
             \ForEach{ node $c \in S$} \label{alg:B-HFL:line:11}
             \State $\theta_t^c \gets \Call{ExecuteNode}{\theta_t, c} $ \Comment{non-blocking, returns a future} \label{alg:B-HFL:line:12}
+
             % \State $\Delta_t^c \gets \theta_t^c - \theta_t$
             \EndFor
+
             \ForEach{ node $a \in AncRes_q$} \label{alg:B-HFL:line:13}
             \State $ R^\uparrow_a \gets \Call{SelectResiduals}{[\theta^c_t \,\, \forall c \in S]}$ \label{alg:B-HFL:line:14}
             \EndFor
             % \State $\Delta_t \gets \frac{1}{|C_q|} \sum_{c \in C_q} \Delta_t^c$
-            \State $\theta_{t+1} \gets \Call{NodeOpt}{\theta_t, [\theta^c_t \,\, \forall c \in S], R^\uparrow_q, \eta^{\uparrow}_q}  $ \Comment{aggregate children and ``residuals''} \label{alg:B-HFL:line:15}
+            \State $\theta_t^\prime \gets \Call{NodeOpt}{\theta_t, [\theta^c_t \,\, \forall c \in S], R^\uparrow_q, \eta^{\uparrow}_q}  $ \Comment{aggregate children and ``residuals''} \label{alg:B-HFL:line:15}
+            \State $\theta_{t+1} = \Call{Train}{\theta_{t}^\prime,D_q,  E_q, \eta^l_q}$ \Comment{train (sync or async) parameters on node data} \label{alg:B-HFL:line:7}
             \EndFor
             \State $W_q \gets \theta_{T_q}$ \Comment{update persistent node model} \label{alg:B-HFL:line:16}
             \State \textbf{return} $\theta_{T_q}$ \label{alg:B-HFL:line:17}
@@ -76,18 +80,19 @@ Since not all nodes in the tree are required to be capable of training, it is wo
 
     \item \textbf{Root-to-leaf aggregation:} Use$\textsc{NodeOpt}$ to aggregate the persistent local model with the parent model $\phi$ and the models in ``residual'' connections from ancestors $R^\downarrow_q$ using $\eta^\downarrow_q$. [\cref{alg:B-HFL:line:5}]
     \item Begin executing federated rounds. [\cref{alg:B-HFL:line:6}]
-    \item Train $\theta_t$ on the potentially empty dataset $D_q$ using the local learning rate $\eta^l_q$ for $E_q$ local epochs. \textit{This is where edge clients and servers with proxy datasets would execute training.} [\cref{alg:B-HFL:line:7}]
+
     \item Add the current ancestor model $\theta_t$ to the $R^\downarrow_d$ accumulator of every descendent to which a ``residual'' connection exists. [\cref{alg:B-HFL:line:8} to \cref{alg:B-HFL:line:9}]
     \item Sample node subset $S$ for execution. In the case of the edge servers, the sampled set's size would equal the client cohort size. For internal nodes $S = C_q$. For a leaf node~(client) $S = \emptyset$. [\cref{alg:B-HFL:line:10}]
-    \item Recursively execute the nodes in the subtree of all selected children using $\theta_t$.  [\cref{alg:B-HFL:line:11} to \cref{alg:B-HFL:line:12}]
+    \item Recursively execute the nodes in the subtree of all selected children sending $\theta_t$.  [\cref{alg:B-HFL:line:11} to \cref{alg:B-HFL:line:12}]
     \item Select a series of children models $\theta_t^c$ and send them to the $R^\uparrow_a$ accumulator of every ancestor to which a ``residual'' connection exists. [\cref{alg:B-HFL:line:13} to \cref{alg:B-HFL:line:14}]
     \item \textbf{Leaf-to-root aggregation:} Use$\textsc{NodeOpt}$ to aggregate $\theta_t$ with the chidlren models $[\theta^c_t \,\, \forall c \in S]$ and the models in ``residual'' connections from descendants $R^\uparrow_q$ using $\eta^\uparrow$.  [\cref{alg:B-HFL:line:15}]
+    \item Train $\theta_t$ on the potentially empty dataset $D_q$ using the local learning rate $\eta^l_q$ for $E_q$ local epochs. \textit{This is where edge clients and servers with proxy datasets would execute training.} [\cref{alg:B-HFL:line:7}]
     \item After federated training, update the persistent model $W_q$ with the most recent federated model $\theta_{T_q}$ and then return $\theta_{T_q}$.[\cref{alg:B-HFL:line:16} to \cref{alg:B-HFL:line:17}]
 
 
 \end{enumerate}
 
-``Residual'' connections from descendants to ancestors may send multiple child models based (e.g., the $K$ models representing the largest updates) directly or after an independent aggregation procedure. On the other hand, ``residual'' connections from ancestors to descendants only need to send one model. The most relevant example of a $\textsc{NodeOpt}$ procedure is FedOPT~(\cref{eq:FedOpt:all})~\citep{FedOPT}. FedOPT can be adapted to handle residual connections by adding a second accumulator state and averaging the input from the ``residuals''. The synchronicity of $\textsc{Train}$ is defined concerning the execution of child nodes. If training is synchronous, it must complete before child nodes begin execution. If async, the model sent to a child would be $\theta_t$ prior to training, and the post-training $\theta_t$ would be used during leaf-to-root aggregation. When async training is used, it must be accounted for during the aggregation procedure with a potential staleness factor.
+``Residual'' connections from descendants to ancestors may send multiple child models based (e.g., the $K$ models representing the largest updates) directly or after an independent aggregation procedure. On the other hand, ``residual'' connections from ancestors to descendants only need to send one model. The most relevant example of a $\textsc{NodeOpt}$ procedure is FedOPT~(\cref{eq:FedOpt:all})~\citep{FedOPT}. FedOPT can be adapted to handle residual connections by adding a second accumulator state and averaging the input from the ``residuals''. The synchronicity of $\textsc{Train}$ is defined concerning the execution of child nodes. If training is synchronous, it must complete before child nodes begin execution. If async, the model sent to a child would be $\theta_{t}^\prime$ prior to training, and the post-training $\theta_{t+1}$ would be used during leaf-to-root aggregation. When async training is used, it must be accounted for during the aggregation procedure with a potential staleness factor.
 
 The system may bring several potential benefits:
 \begin{enumerate}
@@ -109,7 +114,7 @@ An example of a B-HFL system, which would be the primary deliverable of this pro
 
 Each node, including the clients, runs at-least two stateful FedOPT server optimizers with separate learning rates, one for the leaf-to-root aggregation with the averaged pseudo-gradient $\Delta_t$ and one for parent aggregation. Even if the same leaf-to-root learning rate $\eta^\uparrow$ and root-to-leaf learning rate $\eta^\downarrow$ were to be used for all nodes in the tree or at a given level, the independent server optimiser states would distinguish the aggregation procedure of their node based on historical trends.
 
-The residual connections serve different functions between the leaf-to-root and root-to-leaf stages. For the upward stage, they collect the client update with the highest absolute value from all edge servers, thus sending one additional model to the central server for each edge-server. The central server may then maintain independent optimiser states for each incoming ``residual'' connection. For the downward stage, they provide the edge servers with a chance to directly benefit from the training of the central server without having to rely on the models of the intermediary servers. While this last component is somewhat superfluous in the small hierarchy shown by \cref{fig:TreeStructure}, it would prove highly relevant for profound structures. For example, for deep hierarchies, parameters that receive extra training at the central server might get averaged several times before reaching the edge servers and thus influencing the leaves.
+The residual connections serve different functions between the leaf-to-root and root-to-leaf stages. For the upward stage, they collect the $K=1$ client update with the highest absolute value from all edge servers, thus sending one additional model to the central server for each edge-server. For the downward stage, they provide the edge servers with a chance to directly benefit from the training of the central server without having to rely on the models of the intermediary servers. While this last component is somewhat superfluous in the small hierarchy shown by \cref{fig:TreeStructure}, it would prove highly relevant for profound structures. For example, for deep hierarchies, parameters that receive extra training at the central server might get averaged several times before reaching the edge servers and thus influencing the leaves.
 
 
 
