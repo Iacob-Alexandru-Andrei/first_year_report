@@ -2,21 +2,9 @@
 
 
 
-Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency. The objective function of FL from \cref{eq:flObjective} is modified for B-HFL as described in \cref{eq:BHFL:all}
-
-\begin{subequations}
-    \begin{align}
-        \underset{\theta}{min} F_q(\theta) & = \alpha_q f_q(\theta) + \beta_q \, F_{D_q}(\theta) + \gamma_q \, F_{A_q}(\theta) \\
-        F_{D_q}(\theta)                    & = \sum_{d \in D_q} p_d F_d(\theta)                                                \\
-        F_{A_q}(\theta)                    & = \sum_{a \in A_q} p_a F_a(\theta)                                                \\
-        f_q(\theta)                        & = \cfrac{1}{\lvert \Omega_ \rvert} \underset{j \in \Omega_q}{\sum} f_q^j(w)
-    \end{align}
-    \label{eq:BHFL:all}
-\end{subequations}
-where each node $q$ in the tree attempts to find the model $\theta$ which minimizes its local objective $f_q$, that of its descendants $F_{D_q}$, and ancestors $F_{A_q}$ using weights $\alpha_q,\beta_q,\gamma_q$. The objective of the descendants and ancestors are recursively described while the local objective $f_q$ is defined by performance of the model $\theta$ on the local node dataset $\Omega_q$. In the case of a leaf node, only its local objective and that of the ancestors matter, while for the root, only its local objective and that of the descendants matter. If an internal node lacks a proxy dataset, only $F_{D_q}$ and $F_{A_q}$ are optimized.
+Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency.
 
 This is achieved by using the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
-
 \begin{enumerate}
     \item While previous methods such as HierFAVG~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular} entirely replace the edge-server and client models after global aggregation takes place, B-HFL performs partial aggregation between a children node and their parent, which allows children to maintain their local weights while incorporating global information. We propose modeling this in two phases:
 
@@ -28,6 +16,19 @@ This is achieved by using the hierarchical structure to organize communication b
     \item Internal nodes within the hierarchical structure can train on proxy datasets to regularise training as done by \citet{OneShotFL,FLwithNonIID}. Proxy training is especially relevant for language modelling as large public corpora are available. In order to avoid operating on stale parameters, the natural point to add such training is after leaf-to-root aggregation reaches the node and before root-to-leaf aggregation takes place. However, the latency incurred from such training may be too large. In that case, it can operate on stale parameters asynchronously while its subtrees execute.
     \item All nodes may be allowed to operate synchronously or asynchronously concerning other nodes on the same level if necessary during leaf-to-root aggregation. For leaves (clients) under the control of an edge-server, this is equivalent to traditional asynchronous FL~\citep{AsynchronousFLonHetDevicesSurvey}. For an internal node, the same federated asynchronous strategies~\citep{FedBuff,PAPAYA} can be applied when receiving models from the child nodes, with client execution being replaced by the execution of the entire subtree.
 \end{enumerate}
+
+Thus, the objective function of FL from \cref{eq:flObjective} is modified for B-HFL as described in \cref{eq:BHFL:all}
+
+\begin{subequations}
+    \begin{align}
+        \underset{\theta}{min} F_q(\theta) & = \alpha_q f_q(\theta) + \beta_q \, F_{D_q}(\theta) + \gamma_q \, F_{A_q}(\theta) \\
+        F_{D_q}(\theta)                    & = \sum_{d \in D_q} p_d F_d(\theta)                                                \\
+        F_{A_q}(\theta)                    & = \sum_{a \in A_q} p_a F_a(\theta)                                                \\
+        f_q(\theta)                        & = \cfrac{1}{\lvert \Omega_ \rvert} \underset{j \in \Omega_q}{\sum} f_q^j(w)
+    \end{align}
+    \label{eq:BHFL:all}
+\end{subequations}
+where each node $q$ in the tree attempts to find the model $\theta$ which minimizes its local objective $f_q$, that of its descendants $F_{D_q}$, and ancestors $F_{A_q}$ using weights $\alpha_q,\beta_q,\gamma_q$. The objective of the descendants and ancestors are recursively described while the local objective $f_q$ is defined by performance of the model $\theta$ on the local node dataset $\Omega_q$. In the case of a leaf node, only its local objective and that of the ancestors matter, while for the root, only its local objective and that of the descendants matter. If an internal node lacks a proxy dataset, only $F_{D_q}$ and $F_{A_q}$ are optimized. All leaf nodes are expected to have local datasets.
 
 
 Expressly, parameters aggregated from the leaf nodes (clients) up through the tree are fine-tuned to relevant local data. In contrast, parameters transmitted from parents to children are averaged over more numerous populations. When servers cover meaningfully clustered clients, these populations may be less related (e.g., covering multiple languages). Furthermore, if internal nodes are allowed to train on proxy datasets, they inject additional training into the federated models and provide regularisation for the entire tree. In traditional FL approaches, training on the server directly controlling the clients can impose overly strong regularisation; however, in B-HFL, higher nodes in the tree already represent a global picture and have limited impact at the leaves as their influence gets diluted through multiple intermediary nodes. Finally, allowing each client to maintain a persistent model across rounds and aggregate with their parents rather than entirely replacing their model makes them identical to any other node except for not having children.
@@ -82,12 +83,12 @@ Since not all nodes in the tree are required to be capable of training, it is wo
             \State \textbf{return} $\theta_{T_q}$ \label{alg:B-HFL:line:17}
             \EndProcedure
 
-            \State $\Call{ExecuteNode}{\emptyset, root}$
+            \State $\Call{ExecuteNode}{\phi = \emptyset, q = root}$
         \end{algorithmic}
     \end{onehalfspace}
 \end{algorithm}
 
-\cref{alg:B-HFL} describes B-HFL as a recursive algorithm starting from the root of the system. It assumes that the model training $\textsc{Train}$, and node aggregation $\textsc{NodeOpt}$ procedures are provided. All variables are indexed per-node and assumed to be provided by the implementation. The ``residual'' connections are adjacency lists between nodes and their ancestors/descendants in $AncRes/DescRes$. The algorithm treats all nodes homogeneously with distinctions in execution only for the root.
+\cref{alg:B-HFL} describes B-HFL recursively starting from the system's root. It assumes that the model training $\textsc{Train}$, and node aggregation $\textsc{NodeOpt}$ procedures are provided. All variables are indexed per-node and assumed to be provided by the implementation. The ``residual'' connections are adjacency lists between nodes and their ancestors/descendants in $AncRes/DescRes$. The algorithm treats all nodes homogeneously with distinctions in execution only for the root.
 \begin{enumerate}
     \item For the root, use the persistent model as the initial federated model $\theta_0$.  [\cref{alg:B-HFL:line:2}]
 
