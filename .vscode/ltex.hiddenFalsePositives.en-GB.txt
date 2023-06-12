@@ -11,3 +11,4 @@
 {"rule":"PASSIVE_VOICE","sentence":"^\\QAll variables are indexed on a per-node basis and assumed to be provided by the implementation.\\E$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\QThe “residual” connections are defined as adjacency lists between nodes and their ancestors/descendents in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q,\\E$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\QAll variables are indexed per-node and assumed to be provided by the implementation.\\E$"}
+{"rule":"THREE_NN","sentence":"^\\QTo further improve communication efficiency \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q propose a network and compute-aware resource allocation framework for hierarchical FL, which assigns clients to edge servers as to optimise costs.\\E$"}

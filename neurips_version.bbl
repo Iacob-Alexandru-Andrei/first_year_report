@@ -1,4 +1,4 @@
-\begin{thebibliography}{68}
+\begin{thebibliography}{70}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -409,6 +409,15 @@ Lumin Liu, Jun Zhang, Shenghui Song, and Khaled~B. Letaief.
 \newblock \doi{10.1109/ICC40277.2020.9148862}.
 \newblock URL \url{https://doi.org/10.1109/ICC40277.2020.9148862}.
 
+\bibitem[Luo et~al.(2020)Luo, Chen, Wu, Zhou, and Yu]{HFELJointEdgeResource}
+Siqi Luo, Xu~Chen, Qiong Wu, Zhi Zhou, and Shuai Yu.
+\newblock {HFEL:} joint edge association and resource allocation for
+  cost-efficient hierarchical federated edge learning.
+\newblock \emph{{IEEE} Trans. Wirel. Commun.}, 19\penalty0 (10):\penalty0
+  6535--6548, 2020.
+\newblock \doi{10.1109/TWC.2020.3003744}.
+\newblock URL \url{https://doi.org/10.1109/TWC.2020.3003744}.
+
 \bibitem[Lyu et~al.(2020)Lyu, Yu, Nandakumar, Li, Ma, Jin, Yu, and
   Ng]{TowardsFairPrivacyPreservingFL}
 Lingjuan Lyu, Jiangshan Yu, Karthik Nandakumar, Yitong Li, Xingjun Ma, Jiong
@@ -603,6 +612,17 @@ Hongyi Wang, Mikhail Yurochkin, Yuekai Sun, Dimitris~S. Papailiopoulos, and
 \newblock In \emph{8th International Conference on Learning Representations,
   {ICLR} 2020, Addis Ababa, Ethiopia, April 26-30, 2020}. OpenReview.net, 2020.
 \newblock URL \url{https://openreview.net/forum?id=BkluqlSFDS}.
+
+\bibitem[Wang et~al.(2021)Wang, Xu, Liu, Huang, Qiao, and
+  Zhao]{ResourceEfficientHierAgg}
+Zhiyuan Wang, Hongli Xu, Jianchun Liu, He~Huang, Chunming Qiao, and Yangming
+  Zhao.
+\newblock Resource-efficient federated learning with hierarchical aggregation
+  in edge computing.
+\newblock In \emph{40th {IEEE} Conference on Computer Communications, {INFOCOM}
+  2021, Vancouver, BC, Canada, May 10-13, 2021}, pages 1--10. {IEEE}, 2021.
+\newblock \doi{10.1109/INFOCOM42981.2021.9488756}.
+\newblock URL \url{https://doi.org/10.1109/INFOCOM42981.2021.9488756}.
 
 \bibitem[Wei et~al.(2020)Wei, Li, Ding, Ma, Yang, Farokhi, Jin, Quek, and
   Poor]{DiffPrivacyFL}

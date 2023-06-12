@@ -2,7 +2,20 @@
 
 
 
-Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency. This is achieved by using the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
+Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency. The objective function of FL from \cref{eq:flObjective} is modified for B-HFL as described in \cref{eq:BHFL:all}
+
+\begin{subequations}
+    \begin{align}
+        \underset{\theta}{min} F_q(\theta) & = \alpha_q f_q(\theta) + \beta_q \, F_{D_q}(\theta) + \gamma_q \, F_{A_q}(\theta) \\
+        F_{D_q}(\theta)                    & = \sum_{d \in D_q} p_d F_d(\theta)                                                \\
+        F_{A_q}(\theta)                    & = \sum_{a \in A_q} p_a F_a(\theta)                                                \\
+        f_q(\theta)                        & = \cfrac{1}{\lvert \Omega_ \rvert} \underset{j \in \Omega_q}{\sum} f_q^j(w)
+    \end{align}
+    \label{eq:BHFL:all}
+\end{subequations}
+where each node $q$ in the tree attempts to find the model $\theta$ which minimizes its local objective $f_q$, that of its descendants $F_{D_q}$, and ancestors $F_{A_q}$ using weights $\alpha_q,\beta_q,\gamma_q$. The objective of the descendants and ancestors are recursively described while the local objective $f_q$ is defined by performance of the model $\theta$ on the local node dataset $\Omega_q$. In the case of a leaf node, only its local objective and that of the ancestors matter, while for the root, only its local objective and that of the descendants matter. If an internal node lacks a proxy dataset, only $F_{D_q}$ and $F_{A_q}$ are optimized.
+
+This is achieved by using the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
 
 \begin{enumerate}
     \item While previous methods such as HierFAVG~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular} entirely replace the edge-server and client models after global aggregation takes place, B-HFL performs partial aggregation between a children node and their parent, which allows children to maintain their local weights while incorporating global information. We propose modeling this in two phases:
