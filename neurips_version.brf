@@ -110,6 +110,9 @@
 \backcite {Client-Edge-CloudHierFL}{{5}{2.3.2}{subsubsection.2.3.2}}
 \backcite {Hier_Het_Cellular}{{5}{2.3.2}{subsubsection.2.3.2}}
 \backcite {ResourceEfficientHierAgg}{{5}{2.3.2}{subsubsection.2.3.2}}
+\backcite {OptimalUserEdgeAssingmentHierFL}{{5}{2.3.2}{subsubsection.2.3.2}}
+\backcite {FedAvg}{{5}{2.3.2}{subsubsection.2.3.2}}
+\backcite {FedAvg}{{5}{2.3.2}{subsubsection.2.3.2}}
 \backcite {Client-Edge-CloudHierFL}{{6}{1}{Item.4}}
 \backcite {Hier_Het_Cellular}{{6}{1}{Item.4}}
 \backcite {OneShotFL}{{6}{2}{Item.7}}
@@ -117,7 +120,7 @@
 \backcite {AsynchronousFLonHetDevicesSurvey}{{6}{3}{Item.8}}
 \backcite {FedBuff}{{6}{3}{Item.8}}
 \backcite {PAPAYA}{{6}{3}{Item.8}}
-\backcite {DeepMutualLearning}{{6}{3}{equation.3.4}}
+\backcite {DeepMutualLearning}{{7}{3}{equation.3.4}}
 \backcite {Ditto}{{7}{3}{equation.3.4}}
 \backcite {ResNet}{{7}{3}{equation.3.4}}
 \backcite {ContinualLearningSurvey}{{7}{3}{equation.3.4}}

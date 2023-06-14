@@ -13,3 +13,5 @@ task-incremenetal
 node-excution
 B-HFL
 staleness-adjustement
+FedSGD
+FedAvg

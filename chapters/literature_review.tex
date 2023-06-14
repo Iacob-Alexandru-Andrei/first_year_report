@@ -74,6 +74,8 @@ Previous works in HFL show a series of limitations. The HierFAVG algorithm direc
 
 The work of \citet{ResourceEfficientHierAgg} combines hierarchical aggregation and clustering in a mixed scenario of peer-to-peer and client-server FL where powerful clients take on the role of edge servers and perform aggregation before transmitting their models to the cloud. However, their clustering procedure is meant to optimise communication efficiency first and foremost while satisfying arbitrary resource constraints. It thus does not exploit the personalisation advantages of combining clustering and hierarchical FL\@.
 
+\citet{OptimalUserEdgeAssingmentHierFL} do consider scenarios where the data distribution of edge servers is taken into account. Specifically they allow edge servers to contain clients with a Non-IID distribution and use FedSGD~\citep{FedAvg} to counteract its effects. To obtain communication efficiency without sacrificing convergence at the cloud server, they attempt to maintain an IID distribution across edge servers and apply FedAvg at the cloud server level. While promising, their work requires complete knowledge of the distribution of each client in order to realise edge-server assignment. Furthermore, it assumes that edge servers have sufficiently low communication latency to efficiently train with FedSGD despite the original work of \citet{FedAvg} showing FedSGD to be up to two orders of magnitude slower than FedAvg in terms of convergence speed.
+
 
 
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{70}
+\begin{thebibliography}{71}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -455,6 +455,17 @@ Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, and
   \emph{Proceedings of Machine Learning Research}, pages 1273--1282. {PMLR},
   2017.
 \newblock URL \url{http://proceedings.mlr.press/v54/mcmahan17a.html}.
+
+\bibitem[Mhaisen et~al.(2022)Mhaisen, Abdellatif, Mohamed, Erbad, and
+  Guizani]{OptimalUserEdgeAssingmentHierFL}
+Naram Mhaisen, Alaa~Awad Abdellatif, Amr Mohamed, Aiman Erbad, and Mohsen
+  Guizani.
+\newblock Optimal user-edge assignment in hierarchical federated learning based
+  on statistical properties and network topology constraints.
+\newblock \emph{{IEEE} Trans. Netw. Sci. Eng.}, 9\penalty0 (1):\penalty0
+  55--66, 2022.
+\newblock \doi{10.1109/TNSE.2021.3053588}.
+\newblock URL \url{https://doi.org/10.1109/TNSE.2021.3053588}.
 
 \bibitem[Nguyen et~al.(2022)Nguyen, Malik, Zhan, Yousefpour, Rabbat, Malek, and
   Huba]{FedBuff}
