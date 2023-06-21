@@ -15,3 +15,6 @@ B-HFL
 staleness-adjustement
 FedSGD
 FedAvg
+FedBuff
+FedProx
+defacto
