@@ -1,7 +1,7 @@
 
 Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency while allowing arbitrary degrees of personalization. This section intends to construct the theoretical framework and base algorithmic structure upon which the rest of the PhD thesis will be built.
 
-\section{Research Questions}
+\section{Research Questions}\label{sec:proposal:research_questions}
 The following research questions are of concern:
 \begin{enumerate}
     \item Can using multiple servers with small cohorts \emph{outperform large-cohort single-server FL by avoiding the data efficiency problems identified by \citet{LargeCohorts}?}
@@ -14,7 +14,7 @@ All of these questions are intertwined within the hierarchical structure itself 
 
 \emph{Can a hierarchical FL structure allow us to better utilise node data on both edge clients the servers while maintaining the communication efficiency which made FL practical in the first place?}
 As shown in \cref{tab:gap_analysis} and discussed in \cref{sec:back:related_work}, previous approaches in the field are not flexible enough to simultaneously allow trade-offs in terms of personalisation, sample efficiency and asynchronous training or execution. As such, work in the following proposed family of algorithms would bring a major contribution to the field if successful.
-\section{System Design}
+\section{System Design}\label{sec:proposal:system_design}
 
 The fundamental design of the FL systems proposed in this work allows the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
 
@@ -130,7 +130,7 @@ The system may bring several potential benefits:
 \end{enumerate}
 
 
-\section{Research Directions}
+\section{Research Directions}\label{sec:proposal:research_directions}
 \cref{alg:B-HFL} imposes sufficient structure to create a new family of hierarchical FL algorithms, opening a series of research directions. These directions can be primarily divided into three types: (a) node aggregation procedures filling in the \textsc{NodeOpt} function, (b) residual selection procedures filling in the \textsc{SelectResiduals} function, and (c) restructuring algorithms which decide the edges of each node in the tree. Both node aggregation and ``residual'' selection are expected to be set on a per-tree or per-level basis, as allowing each node to have a separate aggregation procedure would be difficult to manage practically. Regarding tree restructuring, we must distinguish relations imposed by the practical communication links and those purely conceptual. For example, a single physical edge server may represent multiple internal nodes in the tree if multiple populations that should be treated differently fall under its geographical reach. While conceptual relations may be flexible according to the data properties of the leaf nodes and the proxy datasets, those enforced by physical concerns cannot be altered.
 
 \paragraph{Node Aggregation Procedures} Relevant node aggregation procedures can either be those developed for standard FL replacing clients with node child nodes, or procedures that can take advantage of the unique graph structure. The FedOPT is an example of a standard FL algorithm that offers unique \emph{implicit} benefits for this hierarchical structure as it can maintain stateful accumulators that permit every server to be distinguished. More explicit aggregation procedures can \emph{explicitely} consider the links between nodes. A simple example of this second type is aggregation considering the distance between an ancestor and a descendant connected by a ``residual'' connection. More complex procedures may use message-passing as in graph neural networks \todo[Add GNN reference] or take advantage of the stability of the servers to compute long-running similarity metrics between the populations overseen by the servers. The smaller number of children of non-edge servers may also enable much more costly aggrgation procedures. Finally, for nodes on which data is available disttilation or e.t.c may be used.
