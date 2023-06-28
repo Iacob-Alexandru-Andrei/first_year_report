@@ -188,32 +188,32 @@
 %% @param	3	top margin.
 %% @param	4	bottom margin.
 \DeclareRobustCommand{\cam@calcpaperdims}[4]{%
-% MARGINS
-% 'Top margin' is the distance between the top of the text and the top of the page.
-% 'Bottom margin' is the distance between the bottom of the footer (the page number) and the bottom of the page.
-\setlength{\cam@oddmargin}{#1}        % inner margin
-\setlength{\cam@evenmargin}{#2}       % outer margin
-\setlength{\cam@topmargin}{#3}        % top margin        (the distance from the top of the page to the top of the body text -- the header is located between)
-\setlength{\cam@bottommargin}{#4}     % bottom margin     (the distance from the bottom of the page to the bottom of the body text -- the footer is located between)
-% Horizontal spacing
-\setlength{\textwidth}{\paperwidth-\cam@oddmargin-\cam@evenmargin}     % text takes the remaining width (210 - inner - outer)
-\setlength{\oddsidemargin}{\cam@oddmargin-1in}   % Counter the LaTeX 1in margin
-\setlength{\evensidemargin}{\cam@evenmargin-1in} % Counter the LaTeX 1in margin
-\setlength{\marginparwidth}{\cam@evenmargin-8mm} % the margin only has 'outer' space available, so we have to make it a bit thinner.
-\setlength{\marginparsep}{3mm}
+    % MARGINS
+    % 'Top margin' is the distance between the top of the text and the top of the page.
+    % 'Bottom margin' is the distance between the bottom of the footer (the page number) and the bottom of the page.
+    \setlength{\cam@oddmargin}{#1}        % inner margin
+    \setlength{\cam@evenmargin}{#2}       % outer margin
+    \setlength{\cam@topmargin}{#3}        % top margin        (the distance from the top of the page to the top of the body text -- the header is located between)
+    \setlength{\cam@bottommargin}{#4}     % bottom margin     (the distance from the bottom of the page to the bottom of the body text -- the footer is located between)
+    % Horizontal spacing
+    \setlength{\textwidth}{\paperwidth-\cam@oddmargin-\cam@evenmargin}     % text takes the remaining width (210 - inner - outer)
+    \setlength{\oddsidemargin}{\cam@oddmargin-1in}   % Counter the LaTeX 1in margin
+    \setlength{\evensidemargin}{\cam@evenmargin-1in} % Counter the LaTeX 1in margin
+    \setlength{\marginparwidth}{\cam@evenmargin-8mm} % the margin only has 'outer' space available, so we have to make it a bit thinner.
+    \setlength{\marginparsep}{3mm}
 
-% Vertical spacing
-\setlength{\headheight}{5mm}      % The height of the box where the heading text lives
-\setlength{\headsep}{5mm}         % The distance between the heading and the top of the text
-\setlength{\topmargin}{\cam@topmargin-\headheight-\headsep-1in} % Counter the LaTeX 1in margin
+    % Vertical spacing
+    \setlength{\headheight}{5mm}      % The height of the box where the heading text lives
+    \setlength{\headsep}{5mm}         % The distance between the heading and the top of the text
+    \setlength{\topmargin}{\cam@topmargin-\headheight-\headsep-1in} % Counter the LaTeX 1in margin
 
-\setlength{\textheight}{\paperheight-\cam@topmargin-1.7\cam@bottommargin}   % text takes the remaining height (297 - top margin - bottom margin)
-\setlength{\footskip}{.7\cam@bottommargin} % The distance from the bottom of the text to the bottom of the footer
+    \setlength{\textheight}{\paperheight-\cam@topmargin-1.7\cam@bottommargin}   % text takes the remaining height (297 - top margin - bottom margin)
+    \setlength{\footskip}{.7\cam@bottommargin} % The distance from the bottom of the text to the bottom of the footer
 }
 \ifcam@techreport
-\cam@calcpaperdims{25mm}{25mm}{20mm}{20mm}
+    \cam@calcpaperdims{25mm}{25mm}{20mm}{20mm}
 \else
-\cam@calcpaperdims{30mm}{20mm}{20mm}{20mm}
+    \cam@calcpaperdims{30mm}{20mm}{20mm}{20mm}
 \fi
 
 
@@ -299,25 +299,25 @@
 % DOCVAR: submissionnotice (The submission notice is shown on the bottom of the
 % title page.)
 \newcommand{\@submissionnotice}{%
-\ifcam@firstyr
-First year report submitted
-\else 
-\ifcam@secondyr
-Second year report submitted
-\else
-This dissertation is submitted
-\fi
-\fi
-\ifcam@submissiondate
-    on \@submissiondate{}
-\fi
-\ifcam@firstyr
-in partial fulfilment of the requirements
-\fi
-\ifcam@secondyr
-in partial fulfilment of the requirements
-\fi
-for the degree of Doctor of Philosophy%
+    \ifcam@firstyr
+        First year report submitted
+    \else
+        \ifcam@secondyr
+            Second year report submitted
+        \else
+            This dissertation is submitted
+        \fi
+    \fi
+    \ifcam@submissiondate
+        on \@submissiondate{}
+    \fi
+    \ifcam@firstyr
+        in partial fulfilment of the requirements
+    \fi
+    \ifcam@secondyr
+        in partial fulfilment of the requirements
+    \fi
+    for the degree of Doctor of Philosophy%
 }
 \newcommand{\submissionnotice}[1]{\renewcommand{\@submissionnotice}{#1}}
 
@@ -354,217 +354,220 @@ for the degree of Doctor of Philosophy%
 %%%%%
 \newcommand{\frontmatter}{
 
-\pagestyle{empty}
+    \pagestyle{empty}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Title page components
-%%
-%%%%%
-\ifcam@techreport
-% Technical report mustn't have the custom title page (a standard one will be
-% prepended by the editor, see http://www.cl.cam.ac.uk/techreports/submission.html).
-\else
-% The boxes below are all that will be displayed on the title page. They are
-% used to calculate exactly how much space should be left between them
-% (vertically).
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%
+    %% Title page components
+    %%
+    %%%%%
+    \ifcam@techreport
+        % Technical report mustn't have the custom title page (a standard one will be
+        % prepended by the editor, see http://www.cl.cam.ac.uk/techreports/submission.html).
+    \else
+        % The boxes below are all that will be displayed on the title page. They are
+        % used to calculate exactly how much space should be left between them
+        % (vertically).
 
-%% LOGO box
-\newlength{\cam@logorightnudge}
-\setlength{\cam@logorightnudge}{-0.5\paperwidth+12mm}
-\newsavebox{\cam@logo}
-\begin{lrbox}{\cam@logo}
-\hspace*{\cam@logorightnudge}\includegraphics[width=73mm]{CollegeShields/CUni}
-\end{lrbox}
+        %% LOGO box
+        \newlength{\cam@logorightnudge}
+        \setlength{\cam@logorightnudge}{-0.5\paperwidth+12mm}
+        \newsavebox{\cam@logo}
+        \begin{lrbox}{\cam@logo}
+            \hspace*{\cam@logorightnudge}\includegraphics[width=73mm]{CollegeShields/CUni}
+        \end{lrbox}
 
-%% THESIS TITLE box
-\newsavebox{\cam@title}
-\begin{lrbox}{\cam@title}
-    \begin{minipage}[c][\height][c]{.98\textwidth}
-        \begin{center}
-			\Huge%
-				\ifcam@times\else%
-				\bfseries%
-				\fi%
-			{\@title{}}%
-			\ifcam@firstyr\\%
-				{\vspace{5mm}\emph{\LARGE PhD Proposal}}%
-			\fi%
-			\ifcam@secondyr\\%
-				{\vspace{5mm}\emph{\LARGE Dissertation Schedule}}%
-			\fi
-		\end{center}
-    \end{minipage}
-\end{lrbox}
+        %% THESIS TITLE box
+        \newsavebox{\cam@title}
+        \begin{lrbox}{\cam@title}
+            \begin{minipage}[c][\height][c]{.98\textwidth}
+                \begin{center}
+                    \Huge%
+                    \ifcam@times\else%
+                    \bfseries%
+                    \fi%
+                    {\@title{}}%
+                    \ifcam@firstyr\\%
+                        {\vspace{5mm}\emph{\LARGE PhD Proposal}}%
+                    \fi%
+                    \ifcam@secondyr\\%
+                        {\vspace{5mm}\emph{\LARGE Dissertation Schedule}}%
+                    \fi
+                \end{center}
+            \end{minipage}
+        \end{lrbox}
 
-%% COLLEGESHIELD box (optional):
-\ifcam@collegeshield%
-    \newsavebox{\cam@collegeshieldbox}
-    \begin{lrbox}{\cam@collegeshieldbox}
-    \includegraphics[height=20mm]{\@collegeshield}
-    \end{lrbox}
-\fi
-
-%% AUTHOR&COLLEGE box
-\newsavebox{\cam@authorcollege}
-\begin{lrbox}{\cam@authorcollege}
-    \begin{minipage}[c][\height][c]{.98\textwidth}
-        \begin{center}
-        {\large \@author{}~\\[1ex]}
+        %% COLLEGESHIELD box (optional):
         \ifcam@collegeshield%
-            \vspace{2mm}{\usebox{\cam@collegeshieldbox}}\\
+            \newsavebox{\cam@collegeshieldbox}
+            \begin{lrbox}{\cam@collegeshieldbox}
+                \includegraphics[height=20mm]{\@collegeshield}
+            \end{lrbox}
         \fi
-        \@college{}
-        \end{center}
-    \end{minipage}
-\end{lrbox}
 
-%% SUBMISSION NOTICE box
-\newsavebox{\cam@submitnotice}
-\begin{lrbox}{\cam@submitnotice}
-    \begin{minipage}[c][\height][c]{.98\textwidth}
+        %% AUTHOR&COLLEGE box
+        \newsavebox{\cam@authorcollege}
+        \begin{lrbox}{\cam@authorcollege}
+            \begin{minipage}[c][\height][c]{.98\textwidth}
+                \begin{center}
+                    {\large \@author{}~\\[1ex]}
+                    \ifcam@collegeshield%
+                        \vspace{2mm}{\usebox{\cam@collegeshieldbox}}\\
+                    \fi
+                    \@college{}
+                \end{center}
+            \end{minipage}
+        \end{lrbox}
+
+        %% SUBMISSION NOTICE box
+        \newsavebox{\cam@submitnotice}
+        \begin{lrbox}{\cam@submitnotice}
+            \begin{minipage}[c][\height][c]{.98\textwidth}
+                \begin{center}
+                    \@submissionnotice{}
+                \end{center}
+            \end{minipage}
+        \end{lrbox}
+
+        % Now calculate the exact free vertical space
+        \newlength{\cam@titlepagevspace}
+        \setlength{\cam@titlepagevspace}{\textheight%
+            -\totalheightof{\usebox{\cam@logo}}%
+            -\totalheightof{\usebox{\cam@submitnotice}}%
+            -\totalheightof{\usebox{\cam@authorcollege}}%
+            -\totalheightof{\usebox{\cam@title}}}
+
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%
+        %% Title Page: Put the components (logo, title, author, college and submit
+        %% notice) onto the title page.
+        %%
+        %%%%%
         \begin{center}
-            \@submissionnotice{}
+            ~\vspace{.02\cam@titlepagevspace}\\
+            {\usebox{\cam@logo}}\\
+            \vspace{.28\cam@titlepagevspace}
+            {\usebox{\cam@title}}\\
+            \vspace{.23\cam@titlepagevspace}
+            {\usebox{\cam@authorcollege}}\\
+            \null\vfill
+            {\usebox{\cam@submitnotice}}
         \end{center}
-    \end{minipage}
-\end{lrbox}
+        \hypersetup{pdfsubject={\@subjectline},pdfkeywords={\@keywords}}
+    \fi
 
-% Now calculate the exact free vertical space
-\newlength{\cam@titlepagevspace}
-\setlength{\cam@titlepagevspace}{\textheight%
-	-\totalheightof{\usebox{\cam@logo}}%
-	-\totalheightof{\usebox{\cam@submitnotice}}%
-	-\totalheightof{\usebox{\cam@authorcollege}}%
-	-\totalheightof{\usebox{\cam@title}}}
+    % Epigraph on odd page. (optional)
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Title Page: Put the components (logo, title, author, college and submit
-%% notice) onto the title page.
-%%
-%%%%%
-\begin{center}
-~\vspace{.02\cam@titlepagevspace}\\
-{\usebox{\cam@logo}}\\
-\vspace{.28\cam@titlepagevspace}
-{\usebox{\cam@title}}\\
-\vspace{.23\cam@titlepagevspace}
-{\usebox{\cam@authorcollege}}\\
-\null\vfill
-{\usebox{\cam@submitnotice}}
-\end{center}
-\hypersetup{pdfsubject={\@subjectline},pdfkeywords={\@keywords}}
-\fi
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%
+    %% Declaration
+    %%
+    %%%%%
+    \ifcam@techreport
+        % Technical report doesn't need the declaration
+        % (see http://www.cl.cam.ac.uk/techreports/submission.html).
+    \else
+        {\ifcam@firstyr
+                % First and second yr report don't need the declaration
+            \else
+                \ifcam@secondyr
+                    %
+                \else
+                    \chapter*{Declaration}
+                    \thispagestyle{empty}
+                    This dissertation is the result of my own work and includes nothing which is the outcome
+                    of work done in collaboration except as declared in the Preface and specified in the text.
+                    It is not substantially the same as any that I have submitted, or am concurrently
+                    submitting, for a degree or diploma or other qualification at the University of Cambridge
+                    or any other University or similar institution except as declared in the Preface and
+                    specified in the text. I further state that no substantial part of my dissertation has
+                    already been submitted, or is being concurrently submitted, for any such degree, diploma
+                    or other qualification at the University of Cambridge or any other University or similar
+                    institution except as declared in the Preface and specified in the text.
+                    This dissertation does not exceed the prescribed limit of 60\,000 words.
 
-% Epigraph on odd page. (optional)
+                    % Leaving some space for the signature:
+                    \vspace{15mm}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Declaration
-%%
-%%%%%
-\ifcam@techreport
-% Technical report doesn't need the declaration
-% (see http://www.cl.cam.ac.uk/techreports/submission.html).
-\else
-{\ifcam@firstyr
-% First and second yr report don't need the declaration
-\else 
-\ifcam@secondyr
-%
-\else
-\chapter*{Declaration}
-\thispagestyle{empty}
-This dissertation is the result of my own work and includes nothing which is the outcome
-of work done in collaboration except as declared in the Preface and specified in the text.
-It is not substantially the same as any that I have submitted, or am concurrently
-submitting, for a degree or diploma or other qualification at the University of Cambridge
-or any other University or similar institution except as declared in the Preface and
-specified in the text. I further state that no substantial part of my dissertation has
-already been submitted, or is being concurrently submitted, for any such degree, diploma
-or other qualification at the University of Cambridge or any other University or similar
-institution except as declared in the Preface and specified in the text.
-This dissertation does not exceed the prescribed limit of 60\,000 words.
-
-% Leaving some space for the signature:
-\vspace{15mm}
-
-\begin{flushright}
-\@author{}\\
-\@date{}\\
-\end{flushright}
-\vfill
-\fi
-\fi}
-\fi
+                    \begin{flushright}
+                        \@author{}\\
+                        \@date{}\\
+                    \end{flushright}
+                    \vfill
+                \fi
+            \fi}
+    \fi
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Abstract
-%%
-%%%%%
-\ifcam@techreport%
-    \setcounter{page}{3}
-\fi
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%
+    %% Abstract
+    %%
+    %%%%%
+    \ifcam@techreport%
+        \setcounter{page}{3}
+    \fi
 
-\ifcam@firstyr
-% First yr report doesn't need a standalone abstract
-\else
+    \ifcam@firstyr
+        % First yr report doesn't need a standalone abstract
+    \else
 
-\chapter*{Abstract}
-\thispagestyle{empty}
+        \chapter*{Abstract}
+        \thispagestyle{empty}
 
-% Cambridge thesis submission guidelines require the title and author be in the abstract.
-% For more info see https://www.cambridgestudents.cam.ac.uk/your-course/examinations/graduate-exam-information/after-examination/degree-approval-and-1
-\textbf{\large \@title}
-\par\vspace{0.3cm}
-\noindent\textit{\@author}
-\par\vspace{0.6cm}
+        % Cambridge thesis submission guidelines require the title and author be in the abstract.
+        % For more info see https://www.cambridgestudents.cam.ac.uk/your-course/examinations/graduate-exam-information/after-examination/degree-approval-and-1
+        \textbf{\large \@title}
+        \par\vspace{0.3cm}
+        \noindent\textit{\@author}
+        \par\vspace{0.6cm}
 
-\@abstract{}
-\fi
+        \@abstract{}
+    \fi
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Acknowledgements
-%%
-%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%
+    %% Acknowledgements
+    %%
+    %%%%%
 
-\ifcam@firstyr
-% First and second yr report don't need the acknowledgements
-\else 
-{\ifcam@secondyr
-%
-\else
-\chapter*{Acknowledgements}
-\thispagestyle{empty}
-\@acknowledgements{}
-\fi}
-\fi
+    \ifcam@firstyr
+        % First and second yr report don't need the acknowledgements
+    \else
+        {\ifcam@secondyr
+                %
+            \else
+                \chapter*{Acknowledgements}
+                \thispagestyle{empty}
+                \@acknowledgements{}
+            \fi}
+    \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%% Table of contents, figures, symbols and glossary.
-%%
-%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%
+    %% Table of contents, figures, symbols and glossary.
+    %%
+    %%%%%
 
-% The following command prevents the page number to be displayed on the first
-% page of the TOC.
-\addtocontents{toc}{\protect\thispagestyle{empty}}
-\pagestyle{empty}
-\tableofcontents{}
+    % The following command prevents the page number to be displayed on the first
+    % page of the TOC.
+    \addtocontents{toc}{\protect\thispagestyle{empty}}
+    \pagestyle{empty}
+    \begin{singlespace*}
+        \tableofcontents{}
+    \end{singlespace*}
 
-\ifcam@glossary%
-    \cam@printthesisglossary
-\fi
 
-\cleardoublepage
-\pagestyle{plain}
+    \ifcam@glossary%
+        \cam@printthesisglossary
+    \fi
+
+    \cleardoublepage
+    \pagestyle{plain}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -574,16 +577,16 @@ This dissertation does not exceed the prescribed limit of 60\,000 words.
 %%%%%
 
 \ifcam@backrefs
-\RequirePackage[hyperpageref]{backref}
-\renewcommand*{\backref}[1]{}
-\renewcommand*{\backrefalt}[4]{%
-	\ifcase #1 %
-	\or
-	{\footnotesize Cited on page #2.}%
-	\else
-	{\footnotesize Cited on pages #2.}%
-	\fi
-}
+    \RequirePackage[hyperpageref]{backref}
+    \renewcommand*{\backref}[1]{}
+    \renewcommand*{\backrefalt}[4]{%
+        \ifcase #1 %
+        \or
+            {\footnotesize Cited on page #2.}%
+        \else
+            {\footnotesize Cited on pages #2.}%
+        \fi
+    }
 \fi
 
 %%%%% EOF: cam-thesis.cls

@@ -239,10 +239,12 @@
 \backcite {FastSecAgg}{{25}{4}{Item.27}}
 \backcite {ScaleSystemDesign}{{25}{4}{Item.27}}
 \backcite {DiffPrivacyFL}{{25}{4}{Item.27}}
-\backcite {FedAvg}{{26}{3.3}{section*.6}}
-\backcite {LargeCohorts}{{26}{3.3}{section*.6}}
-\backcite {OnTheConvergenceOfFedAvgOnNonIIDdata}{{26}{3.3}{section*.6}}
-\backcite {FedProx}{{26}{3.3}{section*.6}}
+\backcite {AdaptivePersonalisedFederatedLearning}{{26}{3.3}{figure.caption.5}}
+\backcite {AdaptivePersonalisedFederatedLearning}{{27}{3.4}{section*.6}}
+\backcite {FedAvg}{{27}{3.4}{section*.7}}
+\backcite {LargeCohorts}{{27}{3.4}{section*.7}}
+\backcite {OnTheConvergenceOfFedAvgOnNonIIDdata}{{27}{3.4}{section*.7}}
+\backcite {FedProx}{{27}{3.4}{section*.7}}
 \backcite {EuroMLSysWorkshop}{{29}{4.1}{section.4.1}}
 \backcite {DistillingKnowledgeInNeuralNetworks}{{29}{4.1}{section.4.1}}
 \backcite {DeepMutualLearning}{{29}{4.1}{section.4.1}}

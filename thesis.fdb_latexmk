@@ -1,18 +1,18 @@
 # Fdb version 3
-["bibtex thesis"] 1687975466 "thesis.aux" "thesis.bbl" "thesis" 1687975729
+["bibtex thesis"] 1687977249 "thesis.aux" "thesis.bbl" "thesis" 1687977330
   "/usr/local/texlive/2022/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "thesis.aux" 1687975729 49475 17c28497ea0ecfd10553f21ad50c5a6e "pdflatex"
+  "thesis.aux" 1687977330 49759 0a3adb66d979b0f857e2d88ba630e452 "pdflatex"
   "thesis.bib" 1687967098 114650 c9cdef215501adf8c28c59588e748719 ""
   (generated)
   "thesis.bbl"
   "thesis.blg"
-["makeindex thesis.idx"] 1687911289 "thesis.idx" "thesis.ind" "thesis" 1687975729
+["makeindex thesis.idx"] 1687911289 "thesis.idx" "thesis.ind" "thesis" 1687977330
   "thesis.idx" 0 -1 0 "pdflatex"
   (generated)
   "thesis.ilg"
   "thesis.ind"
-["pdflatex"] 1687975728 "/Users/iacobalexandru/projects/first_year_report/thesis.tex" "thesis.pdf" "thesis" 1687975729
-  "/Users/iacobalexandru/projects/first_year_report/thesis.tex" 1687973586 5426 a44d2bd785488222d019ce75cd064879 ""
+["pdflatex"] 1687977329 "/Users/iacobalexandru/projects/first_year_report/thesis.tex" "thesis.pdf" "thesis" 1687977330
+  "/Users/iacobalexandru/projects/first_year_report/thesis.tex" 1687976841 5428 b4eb52a59000b57d32dfe36d7eeb851c ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -243,22 +243,21 @@
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "CollegeShields/CUni.pdf" 1679413458 71776 e4dfefa7564ecf4eab7ab56e6dd0bb16 ""
   "CollegeShields/Homerton.pdf" 1679413458 157496 dad18ad35006f702259f3edb9c7558dd ""
-  "cam-thesis.cls" 1679413458 17758 ee7a55f573ebff5de90e08be767b8eba ""
+  "cam-thesis.cls" 1687976930 19838 68e7b13e7ce676a9f422b93eba73efc2 ""
   "chapters/introduction.tex" 1687914325 10517 4fa1a9dc9af1cf6f0a010e8263aecd61 ""
   "chapters/literature_review.tex" 1687974747 35591 639748e11cc61e69b2cad98426852d79 ""
   "chapters/progress_report.tex" 1687269366 5351 0f83a874f9d2fff3a066abe40d9c7422 ""
-  "chapters/proposal.tex" 1687975728 23429 e5b4c05b855be2163d8596fa06071b51 ""
+  "chapters/proposal.tex" 1687977329 23605 c4ba9e19459610af2714b400ddc2a887 ""
   "chapters/timeplan.tex" 1687114453 3910 0252f55d2c81cc2799ca852400762603 ""
-  "glossary.tex" 1679414066 88 b5c268220640008face6d6a6572bbb62 ""
   "plots/Tree_Structure.drawio.pdf" 1684336350 52245 b87fe0c8abcb395014c86752f5907644 ""
-  "thesis.aux" 1687975729 49475 17c28497ea0ecfd10553f21ad50c5a6e "pdflatex"
-  "thesis.bbl" 1687975466 50398 abdc0b42d293ccfd9185b047090e4557 "bibtex thesis"
-  "thesis.brf" 1687975729 14746 9535e0369a7fa65ad000f15a96d13865 "pdflatex"
+  "thesis.aux" 1687977330 49759 0a3adb66d979b0f857e2d88ba630e452 "pdflatex"
+  "thesis.bbl" 1687977249 50398 abdc0b42d293ccfd9185b047090e4557 "bibtex thesis"
+  "thesis.brf" 1687977330 14898 c9241e42213cb24c85ad1bacc839a44f "pdflatex"
   "thesis.gls" 0 -1 0 ""
   "thesis.ind" 0 -1 0 "makeindex thesis.idx"
-  "thesis.out" 1687975729 4469 4d70c9b265f13a39b8b146a5dbe8a208 "pdflatex"
-  "thesis.tex" 1687973586 5426 a44d2bd785488222d019ce75cd064879 ""
-  "thesis.toc" 1687975729 2647 68a33eb8455d933fca19956d87e5ca58 "pdflatex"
+  "thesis.out" 1687977330 4469 8f6e89273a8e4281bef5965d950d179d "pdflatex"
+  "thesis.tex" 1687976841 5428 b4eb52a59000b57d32dfe36d7eeb851c ""
+  "thesis.toc" 1687977330 2647 9ba037b03b3f0c1f1527751e60da836e "pdflatex"
   (generated)
   "thesis.aux"
   "thesis.brf"
