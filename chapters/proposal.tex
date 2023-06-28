@@ -1,35 +1,38 @@
 
-Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimize data and communication efficiency while allowing arbitrary degrees of personalization. This section intends to construct the theoretical framework and base algorithmic structure upon which the rest of the PhD thesis will be built.
+Given the shortcomings of traditional hierarchical FL systems, this work proposes Bidirectional Hierarchical Federated Learning (B-HFL), an alternative family of methods that optimises data and communication efficiency while allowing flexible degrees of personalisation. This section constructs the algorithmic framework upon which the rest of the PhD thesis will be built.
 
 \section{Research Questions}\label{sec:proposal:research_questions}
-The following research questions are of concern:
-\begin{enumerate}
-    \item Can using multiple servers with small cohorts \emph{outperform large-cohort single-server FL by avoiding the data efficiency problems identified by \citet{LargeCohorts}?}
-    \item If the need for convergence to a single global model is removed, \emph{can hierarchical FL effectively address the trade-off between generalisation and personalisation with Non-IID data?}
-    \item If all nodes are treated homogeneously and servers are allowed to train on proxy data, \emph{can the strength of the regularisation be more effectively controlled in the hierarchical structure?}
-    \item Can the structure of the network itself be used to \emph{enhance or design aggregation strategies without major harm to communication efficiency?}
-    \item Do persistent models and/or continual asynchronous learning allow nodes (especially clients) to \emph{tackle dataset shift and obtain a greater degree of personalisation?}
-\end{enumerate}
-All of these questions are intertwined within the hierarchical structure itself and, unlike previous work in hierarchical FL (\cref{sec:back:HFL}), they are all predicated on the abandonment of a single global model as the explicit goal of FL\@. In fact, they can all be summarised as:
+The proposed research aims to answer the following research questions during the PhD:
+\begin{singlespace*}
+    \begin{enumerate}
+        \item Can using multiple servers with small cohorts \emph{outperform large-cohort single-server FL by avoiding the data efficiency problems identified by \citet{LargeCohorts}?}
+        \item If the need for convergence to a global model is removed, \emph{can hierarchical FL effectively address the trade-off between generalisation and personalisation with Non-IID data?}
+        \item If all nodes are treated homogeneously and servers are allowed to train on proxy data, \emph{can the regularisation strength be more effectively controlled with the hierarchical structure?}
+        \item Can the structure of the network itself be used to \emph{enhance or design aggregation strategies without major harm to communication efficiency?}
+        \item Do persistent models and/or continual asynchronous learning allow nodes to \emph{tackle dataset shift and obtain a greater degree of personalisation?}
+    \end{enumerate}
+\end{singlespace*}
+All of these questions are intertwined within the hierarchical structure itself, and, unlike previous work in hierarchical FL, they are all predicated on the abandonment of a single global model as the explicit goal of FL\@. They can all be reduced to the following question: \emph{Can a hierarchical FL structure allow us to better utilise node data on both clients and servers while maintaining the communication efficiency which made FL practical in the first place?}
 
-\emph{Can a hierarchical FL structure allow us to better utilise node data on both edge clients the servers while maintaining the communication efficiency which made FL practical in the first place?}
-As shown in \cref{tab:gap_analysis} and discussed in \cref{sec:back:related_work}, previous approaches in the field are not flexible enough to simultaneously allow trade-offs in terms of personalisation, sample efficiency and asynchronous training or execution. As such, work in the following proposed family of algorithms would bring a major contribution to the field if successful.
+As shown in \cref{tab:gap_analysis} and discussed in \cref{sec:back:related_work}, previous approaches in the field are not flexible enough to simultaneously allow trade-offs in terms of personalisation, sample efficiency and asynchronous training or execution. As such, research in the following proposed family of algorithms would significantly contribute to the field.
 \section{System Design}\label{sec:proposal:system_design}
 
 The fundamental design of the FL systems proposed in this work allows the hierarchical structure to organize communication between servers and control the dissemination of training parameters through the following design choices:
+\begin{singlespace*}
+    \begin{enumerate}
+        \item While previous methods such as HierFAVG~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular} entirely replace the edge-server and client models after global aggregation takes place, B-HFL performs partial aggregation between a child node and their parent. This
+              allows children to maintain their local weights while incorporating global information. It proceeds in two phases:
 
-\begin{enumerate}
-    \item While previous methods such as HierFAVG~\citep{Client-Edge-CloudHierFL,Hier_Het_Cellular} entirely replace the edge-server and client models after global aggregation takes place, B-HFL performs partial aggregation between a child node and their parent, which allows children to maintain their local weights while incorporating global information. We propose modeling this in two phases:
+              \begin{enumerate}
+                  \item \textbf{Leaf-to-root aggregation:} clients finish training, and their information is propagated up the tree. Each internal node has a parameter $T_n$, which determines after how many rounds it sends its updates to the parent. This value is equivalent to local client epochs during SGD and may be the same for a tree level or independent per node.
+                  \item \textbf{Root-to-leaf aggregation:} After a node has received and aggregated the training result from some or all of its children, it propagates its parameters down their subtree. The propagation cost is proportional to the depth; however, communication between internal nodes can be assumed to be faster than between clients and edge servers.
+              \end{enumerate}
 
-          \begin{enumerate}
-              \item \textbf{Leaf-to-root aggregation:} clients finish training, and their information is propagated up the tree. Each internal node has a parameter $T_n$, which determines after how many rounds it sends its updates to the parent. This value is equivalent to local client epochs during SGD and may be the same for all nodes at a given tree level or independently set per node.
-              \item \textbf{Root-to-leaf aggregation:} After a node has received and aggregated the training result from some or all of its children, it propagates its parameters down their subtree. The cost of this propagation is proportional to the depth of the subtree; however, the connection speed between internal nodes can be assumed to be higher than that of the clients to edge servers.
-          \end{enumerate}
+        \item All nodes may be allowed to execute synchronously or asynchronously concerning other nodes on the same level if necessary during leaf-to-root aggregation. For leaves (clients), this is equivalent to traditional asynchronous FL~\citep{AsynchronousFLonHetDevicesSurvey}. For an internal node, the same federated asynchronous strategies~\citep{FedBuff,PAPAYA} can be applied when receiving models from the children, with client training replaced by executing the subtree rooted at the child node.
 
-    \item Internal nodes within the hierarchical structure can train on proxy datasets to regularise training as done by \citet{OneShotFL,FLwithNonIID}. Proxy training is especially relevant for language modelling as large public corpora are available. In order to avoid operating on stale parameters, the natural point to add such training is after leaf-to-root aggregation reaches the node and before root-to-leaf aggregation takes place. However, the latency incurred from such training may be too large. In that case, it can operate on stale parameters asynchronously while its subtrees execute.
-    \item All nodes may be allowed to operate synchronously or asynchronously concerning other nodes on the same level if necessary during leaf-to-root aggregation. For leaves (clients) under the control of an edge-server, this is equivalent to traditional asynchronous FL~\citep{AsynchronousFLonHetDevicesSurvey}. For an internal node, the same federated asynchronous strategies~\citep{FedBuff,PAPAYA} can be applied when receiving models from the child nodes, with client execution being replaced by the execution of the entire subtree.
-\end{enumerate}
-
+        \item Internal nodes within the hierarchical structure can train on proxy datasets to regularise training as done by \citet{OneShotFL,FLwithNonIID}. Proxy training is especially relevant for language modelling as large public corpora are available. In order to avoid operating on stale parameters, the natural point for such training is after leaf-to-root aggregation and before root-to-leaf aggregation. However, the latency incurred from such training may be too large. In that case, it can train parameters asynchronously while the subtree executes.
+    \end{enumerate}
+\end{singlespace*}
 Thus, the objective function of FL from \cref{eq:flObjective} is modified for B-HFL as described in \cref{eq:BHFL:all}
 
 \begin{subequations}
@@ -43,13 +46,15 @@ Thus, the objective function of FL from \cref{eq:flObjective} is modified for B-
 \end{subequations}
 where each node $q$ in the tree attempts to find the model $\theta$ which minimizes its local objective $f_q$, that of its descendants $F_{D_q}$, and ancestors $F_{A_q}$ using weights $\alpha_q,\beta_q,\gamma_q$. The objective of the descendants and ancestors are recursively described while the local objective $f_q$ is defined by performance of the model $\theta$ on the local node dataset $\Omega_q$. In the case of a leaf node, only its local objective and that of the ancestors matter, while for the root, only its local objective and that of the descendants matter. If an internal node lacks a proxy dataset, only $F_{D_q}$ and $F_{A_q}$ are optimized. All leaf nodes are expected to have local datasets.
 
-Expressly, parameters aggregated from the leaf nodes (clients) up through the tree are fine-tuned to relevant local data. In contrast, parameters transmitted from parents to children are averaged over more numerous populations. When servers cover meaningfully clustered clients, these populations may be less related (e.g., covering multiple languages). Furthermore, if internal nodes are allowed to train on proxy datasets, they inject additional training into the federated models and provide regularisation for the entire tree. In traditional FL approaches, training on the server directly controlling the clients can impose overly strong regularisation; however, in B-HFL, higher nodes in the tree already represent a global picture and have limited impact at the leaves as their influence gets diluted through multiple intermediary nodes. Finally, allowing each client to maintain a persistent model across rounds and aggregate with their parents rather than entirely replacing their model makes them identical to any other node except for not having children. Keeping persistent models and repeatedly re-aggregating them is a more structured version of the Iterative Moving Averaging (IMA) of global models approach applied by \citet{UnderstandingModelAveragingInFL}---with considerable success.
+Expressly, parameters aggregated from the leaf nodes (clients) up through the tree are fine-tuned to relevant local data. In contrast, parameters transmitted from parents to children are averaged over more numerous populations. When servers cover meaningfully clustered clients, these populations may be less related (e.g., covering multiple languages). Furthermore, if internal nodes are allowed to train on proxy datasets, they inject additional training into the federated models and provide regularisation for the entire tree. In traditional FL approaches, training on the server directly controlling the clients can impose overly strong regularisation; however, in B-HFL, higher nodes in the tree already represent a global picture and have limited impact at the leaves as their influence gets diluted through multiple intermediary nodes. Finally, allowing each client to maintain a persistent model across rounds and aggregate with their parents rather than entirely replacing their model makes them identical to any other node except for not having children. Keeping persistent models and repeatedly re-aggregating them is a more structured version of the Iterative Moving Averaging (IMA) applied by \citet{UnderstandingModelAveragingInFL}.
 
-Since not all nodes in the tree are required to be capable of training, it is worth distinguishing models which have been optimised via additional learning rather than mere aggregation. Specifically, training data being available may enable more efficient learning-based aggregation methods such as mutual learning~\citep{DeepMutualLearning} or $l_2$-based regularisation~\citep{Ditto}. Additionally, updates constructed via training directly may offer a better optimisation signal. Thus, this work proposes adding dataflows directly between training nodes (e.g., clients and the root) while using the underlying hierarchical communication structure, like residual connection in ResNet~\citep{ResNet}. For example, the system could allow the $K$ client updates of each server with the highest absolute value to pass all the way to the root, where they may be merged via either training or adaptive optimisation with independent accumulator states. This sort of vertical connection provides highly dynamic and potentially cyclic dataflow. Another avenue worth exploring is allowing nodes, especially clients, to train asynchronously using their persistent model. This would permit clients to account for local dataset shift using well-known techniques from the Continual Learning literature~\citep{ContinualLearningSurvey,LearningWithoutForgetting,kirkpatrick2017overcoming}.
+Since not all nodes in the tree are required to be capable of training, it is worth distinguishing models which have been optimised via additional learning rather than mere aggregation. Specifically, training data being available may enable more efficient learning-based aggregation methods such as mutual learning~\citep{DeepMutualLearning}, $l_2$-based regularisation~\citep{Ditto} or model interpolation with adaptive weights~\citep{AdaptivePersonalisedFederatedLearning,ThreeApproachesMansour}. Additionally, updates constructed via training directly may offer a better optimisation signal. Thus, this work proposes adding dataflows directly between training nodes (e.g., clients and the root) while using the underlying hierarchical communication structure, like residual connection in ResNet~\citep{ResNet}. For example, the system could allow the $K$ client updates of each server with the highest absolute value to pass all the way to the root, where they may be merged via either training or adaptive optimisation with independent accumulator states. This sort of vertical connection provides highly dynamic and potentially cyclic dataflow. Another avenue worth exploring is allowing nodes, especially clients, to train asynchronously using their persistent model. This would permit clients to account for local dataset shift using well-known techniques from the Continual Learning literature~\citep{ContinualLearningSurvey,LearningWithoutForgetting,kirkpatrick2017overcoming}.
+
+\cref{alg:B-HFL} describes B-HFL recursively starting from the system's root. It assumes that the model training $\textsc{Train}$, and node aggregation $\textsc{NodeOpt}$ procedures are provided. All variables are indexed per-node and assumed to be provided by the implementation. The ``residual'' connections are adjacency lists between nodes and their ancestors/descendants in $\mathrm{AncRes}/\mathrm{DescRes}$. The algorithm treats all nodes homogeneously with distinctions in execution only for the root.
 
 \begin{algorithm}[H]
-    \caption[Bidirectional Hierarchical FL]{Recursive algorithm for a generic version of B-HFL. Each node $q \in Q$ has an associated persistent model $W_q$, number of executing rounds $T_q$, child nodes $C_q$, leaf-to-root learning rate $\eta^\uparrow$, root-to-leaf learning rate $\eta^\downarrow$. ``Residual'' edges are kept between nodes and their ancestors/descendants in $\mathrm{AncRes}/\mathrm{DescRes}$
-        with the models being accumulated in the lists of lists $R^\uparrow$ and $R^\downarrow$. }\label{alg:B-HFL}
+    \caption[Bidirectional Hierarchical FL]{Recursive algorithm for a generic version of B-HFL. Each node $q \in Q$ has an associated persistent model $W_q$, number of rounds $T_q$, child nodes $C_q$, leaf-to-root learning rate $\eta^\uparrow$, root-to-leaf learning rate $\eta^\downarrow$. ``Residual'' edges are kept between nodes and their ancestors/descendants in $\mathrm{AncRes}/\mathrm{DescRes}$
+        with models accumulated in the lists $R^\uparrow$ and $R^\downarrow$. }\label{alg:B-HFL}
     \begin{onehalfspace}
 
         \begin{algorithmic}[1]
@@ -65,7 +70,7 @@ Since not all nodes in the tree are required to be capable of training, it is wo
             \EndIf
             \State $\theta_0 \gets W_q$  \Comment{handle root} \label{alg:B-HFL:line:3}
             \If{$\phi \neq \emptyset$} \label{alg:B-HFL:line:4}
-            \State $\theta_0 \gets \Call{NodeOpt}{q,W_0,[\phi], R^\downarrow_q, q, \eta^\downarrow_q} $ \Comment{aggregate parent $[\phi]$ and ``residuals'' from ancestors} \label{alg:B-HFL:line:5}
+            \State $\theta_0 \gets \Call{NodeOpt}{q,W_0,[\phi], R^\downarrow_q, q, \eta^\downarrow_q} $ \Comment{aggregate parent $[\phi]$ and ``residuals''} \label{alg:B-HFL:line:5}
             \EndIf
 
             % \State $\Delta_0 \gets W_q - \phi$
@@ -79,7 +84,7 @@ Since not all nodes in the tree are required to be capable of training, it is wo
 
 
             \ForEach{ node $c \in S$} \label{alg:B-HFL:line:11}
-            \State $\theta_t^c \gets \Call{ExecuteNode}{\theta_t, c} $ \Comment{non-blocking, returns a future} \label{alg:B-HFL:line:12}
+            \State $\theta_t^c \gets \Call{ExecuteNode}{\theta_t, c} $ \Comment{sync/async} \label{alg:B-HFL:line:12}
 
             % \State $\Delta_t^c \gets \theta_t^c - \theta_t$
             \EndFor
@@ -89,7 +94,7 @@ Since not all nodes in the tree are required to be capable of training, it is wo
             \EndFor
             % \State $\Delta_t \gets \frac{1}{|C_q|} \sum_{c \in C_q} \Delta_t^c$
             \State $\theta_t^\prime \gets \Call{NodeOpt}{q,\theta_t, [\theta^c_t \,\, \forall c \in S], R^\uparrow_q, \eta^{\uparrow}_q}  $ \Comment{aggregate children and ``residuals''} \label{alg:B-HFL:line:15}
-            \State $\theta_{t+1} = \Call{Train}{\theta_{t}^\prime,D_q,  E_q, \eta^l_q}$ \Comment{train (sync or async) parameters on node data} \label{alg:B-HFL:line:7}
+            \State $\theta_{t+1} = \Call{Train}{\theta_{t}^\prime,D_q,  E_q, \eta^l_q}$ \Comment{train (sync/async) parameters on node data} \label{alg:B-HFL:line:7}
             \EndFor
             \State $W_q \gets \theta_{T_q}$ \Comment{update persistent node model} \label{alg:B-HFL:line:16}
             \State \textbf{return} $\theta_{T_q}$ \label{alg:B-HFL:line:17}
@@ -99,39 +104,39 @@ Since not all nodes in the tree are required to be capable of training, it is wo
         \end{algorithmic}
     \end{onehalfspace}
 \end{algorithm}
+\noindent In its natural language form, \cref{alg:B-HFL} operates as follows:
+\begin{singlespace*}
+    \begin{enumerate}
+        \item For the root, use the persistent model as the initial federated model $\theta_0$.  [\cref{alg:B-HFL:line:2}]
 
-\cref{alg:B-HFL} describes B-HFL recursively starting from the system's root. It assumes that the model training $\textsc{Train}$, and node aggregation $\textsc{NodeOpt}$ procedures are provided. All variables are indexed per-node and assumed to be provided by the implementation. The ``residual'' connections are adjacency lists between nodes and their ancestors/descendants in $\mathrm{AncRes}/\mathrm{DescRes}$. The algorithm treats all nodes homogeneously with distinctions in execution only for the root.
+        \item \textbf{Root-to-leaf aggregation:} Use$\textsc{NodeOpt}$ to aggregate the persistent node model with the parent model $\phi$ and those in ``residual'' connections from ancestors $R^\downarrow_q$ using $\eta^\downarrow_q$. [\cref{alg:B-HFL:line:5}]
+        \item Begin executing federated rounds. [\cref{alg:B-HFL:line:6}]
+
+        \item Add ancestor model $\theta_t$ to $R^\downarrow_d$ for descendants with ``residual'' connections. [\cref{alg:B-HFL:line:8} to \ref{alg:B-HFL:line:9}]
+        \item Sample node subset $S$ for execution. For edge servers, $\lvert S \rvert$ would equal the client cohort size. For non-edge servers $S = C_q$ while for a leaf node~(client) $S = \emptyset$. [\cref{alg:B-HFL:line:10}]
+        \item Recursively execute nodes in the subtree of selected children, sending $\theta_t$.  [\cref{alg:B-HFL:line:11} to \ref{alg:B-HFL:line:12}]
+        \item Select and send children models $\theta_t^c$ to $R^\uparrow_a$ for ancestors with ``residual'' connections. [\cref{alg:B-HFL:line:13} to \ref{alg:B-HFL:line:14}]
+        \item \textbf{Leaf-to-root aggregation:} Use$\textsc{NodeOpt}$ to aggregate $\theta_t$ with the children models $[\theta^c_t \,\, \forall c \in S]$ and those in ``residual'' connections from descendants $R^\uparrow_q$ using $\eta^\uparrow$.  [\cref{alg:B-HFL:line:15}]
+        \item Train $\theta_t$ on the potentially empty dataset $D_q$ using local learning rate $\eta^l_q$ for $E_q$ epochs. \textit{This is where edge clients and servers with proxy datasets would execute training.} [\cref{alg:B-HFL:line:7}]
+        \item After federated training, update the persistent model $W_q$ with the most recent federated model $\theta_{T_q}$ and then return $\theta_{T_q}$.[\cref{alg:B-HFL:line:16} to \ref{alg:B-HFL:line:17}]
+    \end{enumerate}
+\end{singlespace*}
+The synchronicity of $\textsc{Train}$ is defined concerning the execution of child nodes. If training is synchronous, it must complete before child nodes begin execution. If async, the model sent to a child would be $\theta_{t}^\prime$ prior to training, and the post-training $\theta_{t+1}$ would be used during leaf-to-root aggregation. When async training is used, it must be accounted for during the aggregation procedure with a potential staleness factor.
+
+``Residual'' connections from descendants to ancestors may send multiple children models (e.g., the $K$ models representing the largest updates) directly or after a ``residual'' aggregation procedure which merges them. On the other hand, ``residual'' connections from ancestors to descendants only need to send one model. The most relevant example of a $\textsc{NodeOpt}$ procedure is FedOPT~(\cref{eq:FedOpt:all})~\citep{FedOPT}. FedOPT can be adapted to handle residual connections by adding a second accumulator state and averaging the input from the ``residuals''.
+Bidirectional Hierarchical FL  may bring several potential benefits:
 \begin{enumerate}
-    \item For the root, use the persistent model as the initial federated model $\theta_0$.  [\cref{alg:B-HFL:line:2}]
-
-    \item \textbf{Root-to-leaf aggregation:} Use$\textsc{NodeOpt}$ to aggregate the persistent local model with the parent model $\phi$ and the models in ``residual'' connections from ancestors $R^\downarrow_q$ using $\eta^\downarrow_q$. [\cref{alg:B-HFL:line:5}]
-    \item Begin executing federated rounds. [\cref{alg:B-HFL:line:6}]
-
-    \item Add the current ancestor model $\theta_t$ to the $R^\downarrow_d$ accumulator of every descendent to which a ``residual'' connection exists. [\cref{alg:B-HFL:line:8} to \cref{alg:B-HFL:line:9}]
-    \item Sample node subset $S$ for execution. In the case of the edge servers, the sampled set's size would equal the client cohort size. For internal nodes $S = C_q$. For a leaf node~(client) $S = \emptyset$. [\cref{alg:B-HFL:line:10}]
-    \item Recursively execute the nodes in the subtree of all selected children sending $\theta_t$.  [\cref{alg:B-HFL:line:11} to \cref{alg:B-HFL:line:12}]
-    \item Select a series of children models $\theta_t^c$ and send them to the $R^\uparrow_a$ accumulator of every ancestor to which a ``residual'' connection exists. [\cref{alg:B-HFL:line:13} to \cref{alg:B-HFL:line:14}]
-    \item \textbf{Leaf-to-root aggregation:} Use$\textsc{NodeOpt}$ to aggregate $\theta_t$ with the chidlren models $[\theta^c_t \,\, \forall c \in S]$ and the models in ``residual'' connections from descendants $R^\uparrow_q$ using $\eta^\uparrow$.  [\cref{alg:B-HFL:line:15}]
-    \item Train $\theta_t$ on the potentially empty dataset $D_q$ using the local learning rate $\eta^l_q$ for $E_q$ local epochs. \textit{This is where edge clients and servers with proxy datasets would execute training.} [\cref{alg:B-HFL:line:7}]
-    \item After federated training, update the persistent model $W_q$ with the most recent federated model $\theta_{T_q}$ and then return $\theta_{T_q}$.[\cref{alg:B-HFL:line:16} to \cref{alg:B-HFL:line:17}]
-
-
-\end{enumerate}
-
-``Residual'' connections from descendants to ancestors may send multiple child models based (e.g., the $K$ models representing the largest updates) directly or after an independent aggregation procedure. On the other hand, ``residual'' connections from ancestors to descendants only need to send one model. The most relevant example of a $\textsc{NodeOpt}$ procedure is FedOPT~(\cref{eq:FedOpt:all})~\citep{FedOPT}. FedOPT can be adapted to handle residual connections by adding a second accumulator state and averaging the input from the ``residuals''. The synchronicity of $\textsc{Train}$ is defined concerning the execution of child nodes. If training is synchronous, it must complete before child nodes begin execution. If async, the model sent to a child would be $\theta_{t}^\prime$ prior to training, and the post-training $\theta_{t+1}$ would be used during leaf-to-root aggregation. When async training is used, it must be accounted for during the aggregation procedure with a potential staleness factor.
-
-The system may bring several potential benefits:
-\begin{enumerate}
-    \item Can accommodate nodes having different aggregation methods, learning rates, dynamic optimiser states for leaf-to-root and root-to-leaf aggregation. Similarly to the number of rounds $T$, parameters related to aggregation may be independent or set on a per-tree or per-level basis.
-    \item Smaller cohorts for each edge-server avoids the issue of decreasing pseudo-gradients norms noticed by \citet{LargeCohorts}, as does clustering clients prior to edge-server assignment.
-    \item While persistent local models are known to work well in cross-silo FL, this hierarchical structure makes them relevant in cross-device settings by potentially allowing a much larger number of clients to be sampled every round thus permitting them to be visited more than once.
-    \item Can naturally integrate Secure Aggregation~\citep{SecAggOG,FastSecAgg} at the level of each edge-server. As first noted by \citet{ScaleSystemDesign}, this reduces additional communication cost of training $C$ clients with Secure Aggregation from $\mathcal{O}(C^2)$ to $\mathcal{O}(C^2/M)$ where M is the number of edge-servers. Secure Aggregation and Differential Privacy~\citep{DiffPrivacyFL} only need to be applied at the lowest level of the tree.
+    \item Can accommodate nodes with different aggregation methods, learning rates, dynamic optimiser states for leaf-to-root and root-to-leaf aggregation. Similarly to the number of rounds, aggregation parameters may be independent or set per tree or level.
+    \item Smaller cohorts for each edge-server avoids the issue of decreasing pseudo-gradients norms noticed by \citet{LargeCohorts}, as does clustering clients during edge-server assignment.
+    \item While persistent local models are known to work well in cross-silo FL, this hierarchical structure makes them relevant in cross-device settings by potentially allowing a more significant number of clients to be sampled per round, thus visiting them more than once.
+    \item Can naturally integrate Secure Aggregation~\citep{SecAggOG,FastSecAgg} at the level of each edge-server. As first noted by \citet{ScaleSystemDesign}, this reduces the additional communication cost of training $C$ clients with Secure Aggregation from $\mathcal{O}(C^2)$ to $\mathcal{O}(C^2/M)$ where $M$ is the number of edge-servers. Secure Aggregation and Differential Privacy~\citep{DiffPrivacyFL} only need to be applied at the lowest level of the tree.
 
 \end{enumerate}
 
 
 \section{Research Directions}\label{sec:proposal:research_directions}
-\cref{alg:B-HFL} imposes sufficient structure to create a new family of hierarchical FL algorithms, opening a series of research directions. These directions can be primarily divided into three types: (a) node aggregation procedures filling in the \textsc{NodeOpt} function, (b) residual selection procedures filling in the \textsc{SelectResiduals} function, and (c) restructuring algorithms which decide the edges of each node in the tree. Both node aggregation and ``residual'' selection are expected to be set on a per-tree or per-level basis, as allowing each node to have a separate aggregation procedure would be difficult to manage practically. Regarding tree restructuring, we must distinguish relations imposed by the practical communication links and those purely conceptual. For example, a single physical edge server may represent multiple internal nodes in the tree if multiple populations that should be treated differently fall under its geographical reach. While conceptual relations may be flexible according to the data properties of the leaf nodes and the proxy datasets, those enforced by physical concerns cannot be altered.
+\cref{alg:B-HFL} imposes sufficient structure to create a new family of hierarchical FL algorithms, opening a series of research directions. These directions can be primarily divided into three types: (a) node aggregation procedures filling in the \textsc{NodeOpt} function, (b) residual selection procedures filling in the \textsc{SelectResiduals} function, and (c) clustering algorithms which decide the edges of each node in the tree. Both node aggregation and ``residual'' selection are expected to be set for types of nodes or levels of the tree, as allowing each node to have a separate aggregation procedure would be difficult to manage practically. Regarding clustering, we must distinguish relations imposed by the practical communication links and those purely conceptual. For example, a single physical edge server may represent multiple internal nodes in the tree if multiple populations that should be treated differently fall under its geographical reach. While conceptual relations are flexible according to the data properties
+of clients and proxy datasets, those enforced by physical concerns cannot be altered.
 
 \paragraph{Node Aggregation Procedures} Relevant node aggregation procedures can either be those developed for standard FL replacing clients with node child nodes, or procedures that can take advantage of the unique graph structure. The FedOPT is an example of a standard FL algorithm that offers unique \emph{implicit} benefits for this hierarchical structure as it can maintain stateful accumulators that permit every server to be distinguished. More explicit aggregation procedures can \emph{explicitely} consider the links between nodes. A simple example of this second type is aggregation considering the distance between an ancestor and a descendant connected by a ``residual'' connection. More complex procedures may use message-passing as in graph neural networks \todo[Add GNN reference] or take advantage of the stability of the servers to compute long-running similarity metrics between the populations overseen by the servers. The smaller number of children of non-edge servers may also enable much more costly aggrgation procedures. Finally, for nodes on which data is available disttilation or e.t.c may be used.
 \paragraph{Residual Selection Procedures} For ``residuals'' to be useful during aggregation, they must contain information that is not already evident in the parameters of their parent. As mentioned, it is well-known that averaging is an imperfect means of aggregating models trained on Non-IID data~\citep{FedAvg,LargeCohorts,OnTheConvergenceOfFedAvgOnNonIIDdata,FedProx} as the directions of different pseudo-gradients may conflict or even cancel each other. As such, in the case of leaf-to-root ``residuals'', parameters may be selected on the basis of simple metrics like an $l_n$ norm with the assumption that larger absolute values correspond to more informative gradients, the per-sample loss they have averaged on the local data, or based on their relation to each other (e.g, cosine similarity).

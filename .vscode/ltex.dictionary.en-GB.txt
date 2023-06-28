@@ -18,3 +18,6 @@ FedAvg
 FedBuff
 FedProx
 defacto
+Auxo
+generalisatio-personalisation
+generalisatio-personalisation
