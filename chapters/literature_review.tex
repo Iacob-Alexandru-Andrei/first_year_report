@@ -1,6 +1,3 @@
-% \listoftodos[Background]
-\todo{Scalability experiments with increasing cohort sizes}
-
 The standard FL objective can be modelled as seen in \cref{eq:flObjective}
 \begin{equation} \label{eq:flObjective}
     \underset{\theta}{\min} F(\theta) = \sum_{c \in C} p_c F_c(\theta) \ ,
@@ -109,9 +106,6 @@ Previous works in HFL show a series of limitations. The HierFAVG algorithm direc
 \citet{OptimalUserEdgeAssingmentHierFL} do consider scenarios where the data distribution of edge servers is taken into account and propose optimal user-edge assignment. Specifically, they allow edge servers to contain clients with a Non-IID distribution and use the heterogeneity-resilient FedSGD~\citep{FedAvg} algorithm to counteract its effects. To obtain communication efficiency without sacrificing convergence at the cloud server, they attempt to maintain an IID distribution across edge servers and apply FedAvg at the cloud server level. While promising, their work requires complete knowledge of the distribution of each client in order to realise edge-server assignment. Furthermore, it assumes that edge servers have sufficiently low communication latency to efficiently train with FedSGD despite the original work of \citet{FedAvg} showing FedSGD to be up to two orders of magnitude slower than FedAvg in terms of convergence speed.
 
 The current approaches to hierarchical Federated Learning cannot adequately tackle data heterogeneity because their sole objective is constructing a single consensus model to which the entire federated network is meant to converge. This is opposite to the concern of previously discussed clustering systems incapable of effectively sharing information across clusters. To address this, it is necessary to simultaneously tackle the construction of both generalisable and more personalised models while flexibly tuning the generalisation-personalisation trade-off.
-
-
-
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}

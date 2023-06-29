@@ -1,0 +1,14 @@
+# Fdb version 3
+["pdflatex"] 1688052953 "/Users/iacobalexandru/projects/first_year_report/chapters/neurips_version.tex" "neurips_version.pdf" "neurips_version" 1688052953
+  "/Users/iacobalexandru/projects/first_year_report/chapters/neurips_version.tex" 1687026831 3711 a5e23164850ff13966812a3b603ff59a ""
+  "/usr/local/texlive/2022/texmf-dist/tex/latex/base/article.cls" 1636758526 20144 8a7de377ae7a11ee924a7499611f5a9d ""
+  "/usr/local/texlive/2022/texmf-dist/tex/latex/base/size10.clo" 1636758526 8448 96f18c76bf608a36ee6fbf021ac1dd32 ""
+  "/usr/local/texlive/2022/texmf-dist/web2c/texmf.cnf" 1646502317 40171 cdab547de63d26590bebb3baff566530 ""
+  "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1668700530 2826446 9903427f4a70d07e8e131ddc2fd76846 ""
+  "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
+  "neurips_2021.sty" 0 -1 0 ""
+  "neurips_version.aux" 1688052953 32 3985256e7290058c681f74d7a3565a19 ""
+  "neurips_version.tex" 1687026831 3711 a5e23164850ff13966812a3b603ff59a ""
+  (generated)
+  "neurips_version.log"
+  "neurips_version.pdf"
