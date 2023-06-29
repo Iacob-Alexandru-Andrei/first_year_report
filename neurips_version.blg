@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2022)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: neurips_version.aux
+The style file: plainnat.bst
+Database file #1: thesis.bib
+Warning--I'm ignoring SecAggOG's extra "url" field
+--line 2645 of file thesis.bib
+You've used 102 entries,
+            2773 wiz_defined-function locations,
+            1378 strings with 40628 characters,
+and the built_in function-call counts, 71991 in all, are:
+= -- 6132
+> -- 6322
+< -- 51
++ -- 2101
+- -- 1993
+* -- 6700
+:= -- 11453
+add.period$ -- 481
+call.type$ -- 102
+change.case$ -- 939
+chr.to.int$ -- 96
+cite$ -- 204
+duplicate$ -- 2547
+empty$ -- 4292
+format.name$ -- 2103
+if$ -- 14864
+int.to.chr$ -- 7
+int.to.str$ -- 1
+missing$ -- 100
+newline$ -- 654
+num.names$ -- 460
+pop$ -- 1758
+preamble$ -- 1
+purify$ -- 837
+quote$ -- 0
+skip$ -- 2297
+stack$ -- 0
+substring$ -- 1752
+swap$ -- 490
+text.length$ -- 40
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 1122
+warning$ -- 0
+while$ -- 455
+width$ -- 0
+write$ -- 1637
+(There was 1 warning)

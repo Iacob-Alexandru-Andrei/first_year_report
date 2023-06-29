@@ -61,6 +61,7 @@
 %% The title of the thesis:
 % \setuptodonotes{inline,noinlinepar,inlinewidth=0.15\textwidth}
 \usepackage[capitalise]{cleveref}
+\usepackage{pdfpages}
 
 \title{Bidirectional Hierarchical Federated Learning}
 
@@ -148,10 +149,10 @@
 \input{chapters/introduction.tex}
 \chapter{Background and Related Work}\label{sec:back}
 \input{chapters/literature_review.tex}
-\chapter{Proposed Research}\label{sec:proposal}
-\input{chapters/proposal.tex}
 \chapter{Completed Work}\label{sec:completed_work}
 \input{chapters/progress_report.tex}
+\chapter{Proposed Research}\label{sec:proposal}
+\input{chapters/proposal.tex}
 \chapter{Plan and Timeline}\label{sec:timeplan}
 \input{chapters/timeplan.tex}
 
@@ -172,8 +173,11 @@
 
 \appendix
 
-\chapter{Extra Information}
-Some more text ...
+\chapter{Completed Works}
+\includepdf[pages=-]{plots/EuroMLSys.pdf}
+\includepdf[pages=-]{plots/Privacy_HAR_Alex_Iacob_Camera_Ready.pdf}
+\includepdf[pages=-]{plots/MobiUk.pdf}
+\includepdf[pages=-]{plots/MobiCom_2023 (2).pdf}
 
 
 
