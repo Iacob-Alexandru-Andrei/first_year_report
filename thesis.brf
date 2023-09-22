@@ -26,8 +26,8 @@
 \backcite {Flower}{{5}{1}{chapter.1}}
 \backcite {FedScale}{{5}{1}{chapter.1}}
 \backcite {FedML}{{5}{1}{chapter.1}}
-\backcite {AdvancedAndOpenProblems}{{6}{1}{chapter.1}}
-\backcite {AdvancedAndOpenProblems}{{6}{1}{chapter.1}}
+\backcite {AdvancedAndOpenProblems}{{5}{1}{chapter.1}}
+\backcite {AdvancedAndOpenProblems}{{5}{1}{chapter.1}}
 \backcite {GoogleKeyboard}{{6}{1}{chapter.1}}
 \backcite {GoogleKeyboard}{{6}{1}{chapter.1}}
 \backcite {ScaleSystemDesign}{{6}{1}{chapter.1}}
@@ -40,11 +40,6 @@
 \backcite {AsyncrhonousOnlineFL}{{6}{1}{chapter.1}}
 \backcite {AsyncDropout}{{6}{1}{chapter.1}}
 \backcite {PAPAYA}{{6}{1}{chapter.1}}
-\backcite {AdvancedAndOpenProblems}{{6}{1}{chapter.1}}
-\backcite {Ditto}{{6}{1}{chapter.1}}
-\backcite {FlWithPersonalisationLayers}{{6}{1}{chapter.1}}
-\backcite {AdaptivePersonalisedFederatedLearning}{{6}{1}{chapter.1}}
-\backcite {FederatedLearningMixtureOfGlobalAndLocal}{{6}{1}{chapter.1}}
 \backcite {EuroMLSysWorkshop}{{7}{1.1}{section.1.1}}
 \backcite {OperaWorkshop}{{7}{1.1}{section.1.1}}
 \backcite {FedOPT}{{7}{1.1}{section.1.1}}
